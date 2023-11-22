@@ -1,0 +1,146 @@
+{
+  "main": {
+    "id": "6dad9f910f644405",
+    "type": "split",
+    "children": [
+      {
+        "id": "1b193edd6b1b314f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "50c1c0edbb5f01cb",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "cd655dca74f258c7",
+    "type": "split",
+    "children": [
+      {
+        "id": "3156a629443c4c94",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8b8b186303355519",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "abefa58e1950e149",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "b72ed4c4fbc6fac0",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "c0ce0d91d77c8b80",
+    "type": "split",
+    "children": [
+      {
+        "id": "4a65f2261c7b99ce",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e45aab24410b69dd",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "31115c4d9d26c24c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "28395065c453d18d",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "2ba2bf7224380a22",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false
+    }
+  },
+  "active": "8b8b186303355519",
+  "lastOpenFiles": [
+    "PCI Express technology 3.0/Chapter 12 _ Physical Layer - Logical (Gen3).md",
+    "PCI Express technology 3.0"
+  ]
+}
