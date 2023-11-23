@@ -4,15 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "1b193edd6b1b314f",
+        "id": "97384040d7f38c35",
         "type": "tabs",
         "children": [
           {
-            "id": "50c1c0edbb5f01cb",
+            "id": "d9c39a24d4477bf7",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "PCI Express technology 3.0/Chapter 12 _ Physical Layer - Logical (Gen3).md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "PCI Express technology 3.0/Chapter 12 _ Physical Layer - Logical (Gen3).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "PCI Express technology 3.0/Chapter 12 _ Physical Layer - Logical (Gen3).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,15 +124,17 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "PCI Express technology 3.0/Chapter 12 _ Physical Layer - Logical (Gen3).md"
+              }
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 537.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -138,9 +146,23 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "8b8b186303355519",
+  "active": "d9c39a24d4477bf7",
   "lastOpenFiles": [
+    "PCI Express technology 3.0/images/12-8.png",
+    "PCI Express technology 3.0/images/image.png.crdownload",
+    "PCI Express technology 3.0/images/12-7.png",
+    "PCI Express technology 3.0/images/12-6.png",
+    "PCI Express technology 3.0/images/12-5.png",
+    "PCI Express technology 3.0/images/Gen3-Mode-EIEOS-Symbol-Pattern.png",
+    "PCI Express technology 3.0/images/Sync-Header-Data-Block-Example.png",
+    "PCI Express technology 3.0/images/128b_130b-Block-Encoding.png",
+    "images/pcie-rate.png.md",
     "PCI Express technology 3.0/Chapter 12 _ Physical Layer - Logical (Gen3).md",
+    "images",
+    "PCI Express technology 3.0/images/8b_10b-Lane-Encoding.png",
+    "PCI Express technology 3.0/images/pcie-rate.png",
+    "PCI Express technology 3.0/images",
+    "PCI Express technology 3.0/新建文件夹",
     "PCI Express technology 3.0"
   ]
 }
