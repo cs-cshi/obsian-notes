@@ -8,7 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "d9c39a24d4477bf7",
+            "id": "eba627e36177a277",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -69,7 +69,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "c0ce0d91d77c8b80",
@@ -134,7 +135,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 537.5
+    "width": 537.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -146,21 +148,25 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "d9c39a24d4477bf7",
+  "active": "eba627e36177a277",
   "lastOpenFiles": [
-    "PCI Express technology 3.0/images/12-8.png",
-    "PCI Express technology 3.0/images/image.png.crdownload",
-    "PCI Express technology 3.0/images/12-7.png",
-    "PCI Express technology 3.0/images/12-6.png",
-    "PCI Express technology 3.0/images/12-5.png",
-    "PCI Express technology 3.0/images/Gen3-Mode-EIEOS-Symbol-Pattern.png",
-    "PCI Express technology 3.0/images/Sync-Header-Data-Block-Example.png",
-    "PCI Express technology 3.0/images/128b_130b-Block-Encoding.png",
-    "images/pcie-rate.png.md",
+    "PCI Express technology 3.0/images/12-15.png",
+    "PCI Express technology 3.0/images/12-14.png",
+    "PCI Express technology 3.0/images/12-13.png",
+    "PCI Express technology 3.0/images/12-12.png",
+    "PCI Express technology 3.0/images/12-11.png",
+    "PCI Express technology 3.0/Chapter 11 _ Physical Layer - Logical (Gen1、Gen2).md",
     "PCI Express technology 3.0/Chapter 12 _ Physical Layer - Logical (Gen3).md",
+    "PCI Express technology 3.0/Chapter 11 _ Physical Layer-Logical (Gen1、Gen2).md",
+    "PCI Express technology 3.0/images/12-10.png",
+    "PCI Express technology 3.0/12-10.png",
+    "PCI Express technology 3.0/images/12-9.png",
+    "PCI Express technology 3.0/images/Pasted image 20231123103446.png",
+    "PCI Express technology 3.0/Pasted image 20231123103446.png",
+    "Pasted image 20231123103446.png",
+    "PCI Express technology 3.0/images/image.png.crdownload",
+    "images/pcie-rate.png.md",
     "images",
-    "PCI Express technology 3.0/images/8b_10b-Lane-Encoding.png",
-    "PCI Express technology 3.0/images/pcie-rate.png",
     "PCI Express technology 3.0/images",
     "PCI Express technology 3.0/新建文件夹",
     "PCI Express technology 3.0"
