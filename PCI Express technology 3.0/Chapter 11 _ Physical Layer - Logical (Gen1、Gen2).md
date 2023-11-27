@@ -109,7 +109,6 @@ $G(X) = X^{16} + X^{5} + X^4 + X^3 + 1$
 具体功能框架图如下图所示：
 ![Figure 11-14: Scrambler](https://cdn.nlark.com/yuque/0/2023/png/12616066/1699865273871-ec6484e5-0350-4690-9db7-6e2edab655a2.png#averageHue=%23fbfaf9&clientId=u2a3fe270-7fb4-4&from=paste&height=356&id=uf2cf849e&originHeight=356&originWidth=576&originalType=binary&ratio=1&rotation=0&showTitle=true&size=69627&status=done&style=none&taskId=u77ab8bae-8e87-4b44-b76e-84d7a4b0d73&title=Figure%2011-14%3A%20Scrambler&width=576 "Figure 11-14: Scrambler")
 扰码器需要遵循的规则：
-
 - 不同 Lane 的扰码器必须同步操作
 - 只作用于 TLP 和 DLLP 中的 D 字符以及逻辑空闲字符（00h），不作用于 K 字符和 Ordered Set 字符，包括Ordered Set 中 D 字符（如 TS1、TS2等）
 - 兼容性测试字符（Compliance Pattern Character）不被扰码
@@ -131,7 +130,6 @@ $G(X) = X^{16} + X^{5} + X^4 + X^3 + 1$
 
 ### Properties of 10-bit Symbols
 8b/10 编码并不是直接将 8-bit 编码成 10-bit，而是分为 5-to-6 bit 和 3-to-4 bit 两部分。
-
 - DC 平衡：1 的平均数目等于 0的数目
 - 比特流不会包含超过 5 个连续的 1 或 0
 - 每个 10-bit Symbol 包含：

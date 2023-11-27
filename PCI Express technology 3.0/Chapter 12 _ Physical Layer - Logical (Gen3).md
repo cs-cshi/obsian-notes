@@ -209,10 +209,54 @@ Mux 对上层来的 TLP、DLLP 加入相应 Tokens 构建完整的 TLP、DLLP �
 >仅当 LTSSM 处于轮询合规状态时，8-bit Error_Status 字段才有意义。
 
 ### Transmitter SOS Rules
+发送端 SOS（Skip Ordered Set）规则：
+- SOS 发生在 370~375 blocks 之间，Loopback 需在此期间调度两个 SOS，彼此间隔不超过 2 blocks。
+- SOS 只能在数据包边界发送，可能会累积，但不允许连续发送 SOS，必须使用 Data Block 隔开。
+- 发送端处于电气空闲状态时重置 SOS 定时器和计数器。
+- 128b/130b 中 Compliance SOS bit（合规性 SOS 位）不起作用，该为用于 8b/10b Compliance test 期间禁用 SOS。
 ### Receiver SOS Rules
-## 3.3 Scrambling 
+接收端 SOS 规则：
+- 需能在 370~370 blocks 平均间隔间接收 SOS。电气空闲后第一个 SOS 会提前发送。
+- 需检查数据流中的每个 SOS 前是否是以 EDS Token 结尾的数据块。
 
-## 3.3 Scrambling
+## 3.3 Scrambling 
+8b/10b 编码主要处理两个问题：
+- 保持 DC 平衡，以保证相同数量 1 和 0
+- 维持足够多的信号转换，以接收端时钟恢复时比特流能有足够的边沿，实现时钟恢复和时序和相位调整。
+
+128b/130b 编码采用三个步骤解决上述问题：
+- 在较长时间内（130b）维持 DC 平衡和转换密度
+- 训练期间使用 TS1、TS2 有序集根据需要调整以改进 DC 平衡。
+- 接收端鲁棒性更强，能容忍上述问题。
+
+### 3.3.1 Number of LFSRs
+Gen1、Gen2 中各 lane 可以用相同的方式加扰，即单个 LFSR 为所有 lane 提供加扰输入。但 Gen3 速率更高，通常希望相邻 lane 具有不同加扰，降低各lane 串扰的可能，如 IDL 时。Spec 给出了两种实现策略：一种注重降低延迟、一种注重降低成本。
+<center>Figure 12-16: Gen3 Per-Lane LFSR Scrambling Logic</center>
+![Figure 12-16: Gen3 Per-Lane LFSR Scrambling Logic](./images/12-16.png)
+多个 LFST
+- 为每个 lane 实现单独的 LFSR，且具有不同的初始值和随机种子。
+- 优点：简单、速度快
+- 缺点：增加逻辑
+每条 lane 的随机种子会从指定具有 8 个不同值的表分配，如表 12-3 所示，通常按照 0~7 按序分配，超出 8 个从头继续分配。
+<center>Table 12-3: Gen3 Scrambler Seed Values</center>
+![Table 12-3: Gen3 Scrambler Seed Values](./images/12-3table.png)
+
+单个 LFSR
+<center>Figure 12-17: Gen3 SingleȬLFSR Scrambler</center>
+![Figure 12-17: Gen3 SingleȬLFSR Scrambler](./images/12-17.png)
+- 针对不同的 lane，使用一个 LFSR，通过将不同的 tap points 异或来为每个 lane 创建加扰。
+- 所有 lane 种子值相同，但每个 lane 的加扰方程（Tap Equation）通过不同组合生成
+- 每个 lane 还可以通过对相邻的 tap values 异或生成
+	- lane 0 = lane 7 XOR lane 1（超过 x8 循环生成）
+	- lane 2 = lane 1 XOR lane 3
+	- lane 4 = lane 3 XOR lane 5
+	- lane 6 = lane 5 XOR lane 7
+- 单个 LFSR 能使用更少的 gates，但 XOR 过程会产生额外延迟。
+<center> Table 12-4: Gen3 Tap Equations for SingleȬLFSR Scrambler</center>
+![Table 12-4: Gen3 Tap Equations for SingleȬLFSR Scrambler](./images/12-4table.png)
+### 3.3.2 Scrambling Rules
+
+
 ## 3.4 Serializer
 ## 3.5 Mux for Sync Header Bits
 # 4. Gen3 Physical Layer Receive Logic
