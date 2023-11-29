@@ -255,10 +255,28 @@ Gen1、Gen2 中各 lane 可以用相同的方式加扰，即单个 LFSR 为所�
 <center> Table 12-4: Gen3 Tap Equations for SingleȬLFSR Scrambler</center>
 ![Table 12-4: Gen3 Tap Equations for SingleȬLFSR Scrambler](./images/12-4table.png)
 ### 3.3.2 Scrambling Rules
-
+Gen3 加扰器的 LFSRs 不会不断移位移位寄存器（advance），而是根据正在发送的内容移位。加扰器会定期重置。当检测到 EIEOS 或 FTSOS 时，加扰器会初始化。以下给出几种加扰规则：
+- Sync Header 不会加扰，也不会使用 LSFR 移位
+- 当发送端发送最后一个 EIEOS Symbol 时，发送端 LFSR 复位；当接收端收到最后一个 EIEOS 时，接收端 LFSR 复位
+- TS1、TS2 有序集：
+	- Symbol 0 不会被加扰
+	- Symbol 1-13 被加扰
+	- Symbol 14、15 可能会被加扰。当需要改善 DC 平衡时不会加扰，否则将加扰。
+- 有序集 FTS、SDS、EIEOS、EIOS 和 SOS 都不会被加扰。有序集本身会有足够的边缘密度转换实现接收端恢复时钟。
+- 旁路（bypassed）时，发送端会将所有有序集 Symbol 移至码流中，SOS 除外。
+- 接收端检测传入有序集的 Symbol 0，看它是否是 SOS。若是，LSFRs 不会使能，否则 KSFRs 将作用于 Symbol。
+- 所有 DataBlock 被加扰并移入 LFSRs。
+- Symbol 按照小端顺序加扰，即最低有效位先加扰，最高有效位后加扰。
+- 每个 lane LFSR 的种子值取决于 LTSSM 第一次进入 Configuration.Idle（已完成轮询状态）时分配给该 lane 的 lane 编号。一旦分配，只要 LinkUp = 1，就不会改变，即使 lane 编号因为回到配置状态而被重新分配。
+- 128b/130b 编码不能禁用加扰器，需要它帮助实现信号完整性。（8b/10b 可以禁用）
+- Loopback Slave 不对回环 Looped-back 位进行加扰或去扰。
 
 ## 3.4 Serializer
+该移位寄存器 shift register 工作方式与 Gen1/Gen2 的工作方式一致，只是现在一次接收 8-bit 还不是 10-bit。
+
 ## 3.5 Mux for Sync Header Bits
+
+
 # 4. Gen3 Physical Layer Receive Logic
 
 # 5. Notes Regarding Loopback with 128b/130b
