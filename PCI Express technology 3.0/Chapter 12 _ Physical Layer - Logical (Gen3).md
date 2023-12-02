@@ -275,8 +275,31 @@ Gen3 加扰器的 LFSRs 不会不断移位移位寄存器（advance），而是�
 该移位寄存器 shift register 工作方式与 Gen1/Gen2 的工作方式一致，只是现在一次接收 8-bit 还不是 10-bit。
 
 ## 3.5 Mux for Sync Header Bits
-
+最后模块的 Mux 为每个 Block 添加 Sync Header 同步头，使接收端能够区分 Block 是 Data Block 还是 Ordered Set Block。实际上 Sync Header 可以添加到发送端模块中有设计意义中的任何位置，本文加在最后。此外，Sync Header 的添加需要暂停字节流 2bit 时间，以添加 Sync Header。
 
 # 4. Gen3 Physical Layer Receive Logic
+<center>Figure 12-18: Gen3 Physical Layer Receiver Details</center>
+![](./images/12-18.png)
+Gen3 接收逻辑与 Gen1/Gen2 一样，首先从 CDR (Clock and Data Recovery) 电路开始。CDR 中可能会包括锁相环（Phase Lock Loop, PLL），其根据预期频率和比特流中的电平变化跳变锁定发送端时钟的频率，以产生恢复的时钟（Rx Clock），该 Rx Clock 将锁存输入的数据至串并转换缓冲器中。在建立块对齐后（during the Recovery state of the LTSSM ），Rx Clock 8.125 分频的恢复时钟（Rx Clock/8.125）将 8bit Symbol 锁存到弹性缓冲器（Elastic Buffer）中，之后解扰器从加扰的 Symbol 中恢复出原始数据，绕过 8b/10b 解扰器，直接送到字节拆分（Byte Un-striping）逻辑。最后，Ordered Set 被物理层处理，TLPs/DLLPs 字节流被转发至数据链路层。
+> Gen3 理论数据传输速率是 8GT/s，但由于编码方案，实际有效数据会低于这个值，8.125 是考虑 128b/130b 编码方案与数据速率之间的匹配，以及数据实际传输效率得出的近似值。
+
+本文接下来重点论述 Gen3 改变的部分，对于与 Gen1/Gen2 没有改变的部分不再论述。
+
+## 4.1 Differential Receiver
+
+## 4.2 CDR (Clock and Data Recovery) Logic
+
+### 4.2.1 Rx Clock Recovery
+
+### 4.2.2 Deserializer
+
+### 4.2.3 Achieving Block Alignment
+### 4.2.4 Block Type Detection
+## 4.3 Receiver Clock Compensation Logic
+## 4.4 Lane-to-Lane Skew
+## 4.5 Descambler
+## 4.6 Byte Un-Striping
+## 4.7 Packet Filtering
+## 4.8 Receive Buffer (Rx Buffer)
 
 # 5. Notes Regarding Loopback with 128b/130b
