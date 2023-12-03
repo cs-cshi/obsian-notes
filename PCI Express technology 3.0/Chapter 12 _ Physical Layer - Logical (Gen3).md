@@ -280,18 +280,29 @@ Gen3 加扰器的 LFSRs 不会不断移位移位寄存器（advance），而是�
 # 4. Gen3 Physical Layer Receive Logic
 <center>Figure 12-18: Gen3 Physical Layer Receiver Details</center>
 ![](./images/12-18.png)
-Gen3 接收逻辑与 Gen1/Gen2 一样，首先从 CDR (Clock and Data Recovery) 电路开始。CDR 中可能会包括锁相环（Phase Lock Loop, PLL），其根据预期频率和比特流中的电平变化跳变锁定发送端时钟的频率，以产生恢复的时钟（Rx Clock），该 Rx Clock 将锁存输入的数据至串并转换缓冲器中。在建立块对齐后（during the Recovery state of the LTSSM ），Rx Clock 8.125 分频的恢复时钟（Rx Clock/8.125）将 8bit Symbol 锁存到弹性缓冲器（Elastic Buffer）中，之后解扰器从加扰的 Symbol 中恢复出原始数据，绕过 8b/10b 解扰器，直接送到字节拆分（Byte Un-striping）逻辑。最后，Ordered Set 被物理层处理，TLPs/DLLPs 字节流被转发至数据链路层。
-> Gen3 理论数据传输速率是 8GT/s，但由于编码方案，实际有效数据会低于这个值，8.125 是考虑 128b/130b 编码方案与数据速率之间的匹配，以及数据实际传输效率得出的近似值。
+Gen3 接收逻辑与 Gen1/Gen2 一样，首先从 CDR (Clock and Data Recovery) 电路开始。CDR 中可能会包括锁相环（Phase-Locked Loop, PLL），其根据预期频率和比特流中的电平变化跳变锁定发送端时钟的频率，以产生恢复的时钟（Rx Clock），该 Rx Clock 将锁存输入的数据至串并转换缓冲器中。在建立块对齐后（during the Recovery state of the LTSSM ），Rx Clock 8.125 分频的恢复时钟（Rx Clock/8.125）将 8bit Symbol 锁存到弹性缓冲器（Elastic Buffer）中，之后解扰器从加扰的 Symbol 中恢复出原始数据，绕过 8b/10b 解扰器，直接送到字节拆分（Byte Un-striping）逻辑。最后，Ordered Set 被物理层处理，TLPs/DLLPs 字节流被转发至数据链路层。
+> Gen3 理论数据传输速率是 8GT/s，但由于编码方案，实际有效数据会低于这个值，因此 Gen3 内部处理时钟是 Rx Clock / 8.125，8.125 是考虑了提取出 2-bit Sync Header，下节会讲。
 
 本文接下来重点论述 Gen3 改变的部分，对于与 Gen1/Gen2 没有改变的部分不再论述。
 
 ## 4.1 Differential Receiver
+差分接收器逻辑与 Gen1/Gen2 一样，但进行了电气修改以提高信号完整性（P.468 Signal  Compensation），以及建立信号均衡的训练修改（P.577 Link Eqalization Overview）。#TODO
 
 ## 4.2 CDR (Clock and Data Recovery) Logic
-
 ### 4.2.1 Rx Clock Recovery
+Gen3 的加扰方案有助于时钟恢复，但不能保证短间隔内有良好的转换密度，因此 CDR 逻辑需要在没有那么多电平跳变边沿的情况下保持长时间的同步。spec 中没有给出实现这一目标具体方法，但可能需要更鲁棒的 PLL（Phase-Locked Loop）或者 DLL（Delay-Locked Loop，延迟锁相环）电路。
 
+<center>Figure 12-19: Gen3 CDR Logic</center>
+![](./images/12-19.png)
+
+Gen3 弹性缓冲区（Elastic Buffer）内部时钟不是简单的 Rx Clock 时钟的 8 分频，因为 Gen3 输入数据是 2-bit Sync Header 加 16B 的 Block，额外的 2bit 需要在逻辑中处理。spec 没有要求特定实现，其中一个解决方案是将 Rx Clock 除以 8.125，在 130 bit 时间内产生 16 个时钟边缘。
+
+Block Type 检测逻辑需要从比特流中提取出 2-bit Sync Header，因此在 Block 边界，Block Type 检测逻辑将从串并转换器中（deserializer）提取额外 2-bit，确保只有 8bit 数据被传递到弹性缓冲区。
+
+为了解决上述问题，Gen3 8.0GT/s 数据速率内部时钟实际上为 8GHz/8.125 =0.985 GHz。
 ### 4.2.2 Deserializer
+
+
 
 ### 4.2.3 Achieving Block Alignment
 ### 4.2.4 Block Type Detection
