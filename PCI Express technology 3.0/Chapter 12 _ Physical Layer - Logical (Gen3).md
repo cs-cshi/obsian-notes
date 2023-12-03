@@ -330,6 +330,20 @@ Gen3 发送端每 370~375 发送一次 SOS，但只能在数据流边界发送�
 例如，发送端需要在 370~375 Block 发送一次 SOS，而正好在 375 Blocks 时需要发送一个大数据包，由于 SOS 不能中断数据包，因此这个 SOS 会累积。375 Blocks 会有 6000 个 Symbol，将其除以 1666（spec 允许的时钟频率差异） ，意味着此时发/收双方存在 3.6 个时钟差异。如果当前 TLP 大数据包是 4KB，对于 x1 链路来说，它的 SOS 总延时将是 6000 + 4096 = 10096 个 Symbol Time，即 10096/1666 = 6.06 个时钟。因此此时缓冲区大小必须被设计为能容忍 7 个 Symbol。此外，还需考虑 Gen1/Gen2 能够连续发送 SOS，而 Gen3 不能连续发送，意味着当需要发送这个 SOS 时，可能有累积的 SOS 也要发送。
 
 ## 4.4 Lane-to-Lane Skew
+### 4.4.1 Flightt Time Variancce Between Lanes
+<center>Figure 12-22: Receiver Link De-Skew Logic</center>
+![](./images/12-22.png)
+多 lane 链路中，lane 之间数据传输时间差异，将在接收端通过延迟较早到达的 lane 上的数据，直接所有的 lane 全部达到，来自动纠正。 spec 允许设计者通过任何方式来实现这一点。但在 Elastic Buffer 之后，使用数字延迟逻辑来实现去偏移有一个好处，即到达时间差异此时已经被采样为接收端的本地 Symbol Time。如果在某个时钟边沿，一个 lane 的数据到达，而另一个 lane 没有，则它们之间的差异可以用若干时钟周期来衡量，此时早到的lane 可以延迟适当数量的时钟周期，使其与其他 lane 保持一致。实际上接收端容忍的最大偏差是时钟周期的倍数。下表显示了 Gen 1/2/3 允许的偏差。
+![](./images/table12-5.png)
+
+### 4.4.2 De-skew Opportunities
+对于去偏移（de-skew），必须是所有 lane 上同时传输相同的数据才能执行，因此需要在有序集时执行。然而，去偏仅在 L0s、Recovery、Configuration LTSSM 状态下执行。它必须作为以下状态转移的必要条件：
+- 离开 Configuration.Complete
+- 在离开 Configuration.Idle 或 Recovery.Idle，开始处理数据流时
+- 离开 Recovery.RcvrCfg
+- 离开 Rx_L0s.FTS
+如果偏移在 L0 期间发生变化（如温度、电压等），则可能会使接收端发生错误并导致重发数据。如果偏移一直存在，链路会转换到恢复状态，执行偏移校正。虽然设备在 L0 状态不能进行 lane 的偏移校正，但在此状态下定期发送的 SOS 包含一个 LFSR 值，其能帮助外部工具完成这一工作。这些工具不受数据流规则的约束，可以搜索 SOS，并使用其数据模式来实现数据流中的位锁定、块对齐和通道去偏移。
+
 ## 4.5 Descambler
 ## 4.6 Byte Un-Striping
 ## 4.7 Packet Filtering
