@@ -300,13 +300,26 @@ Gen3 弹性缓冲区（Elastic Buffer）内部时钟不是简单的 Rx Clock 时
 Block Type 检测逻辑需要从比特流中提取出 2-bit Sync Header，因此在 Block 边界，Block Type 检测逻辑将从串并转换器中（deserializer）提取额外 2-bit，确保只有 8bit 数据被传递到弹性缓冲区。
 
 为了解决上述问题，Gen3 8.0GT/s 数据速率内部时钟实际上为 8GHz/8.125 =0.985 GHz。
-### 4.2.2 Deserializer
-
-
+### 4.2.2 Deserializer（串并转换器）
+如图 12-19 所示，接收到的数据通过 Rx 时钟将采样到每条 lane 的串行-并行转换器中。串并转换器将 8-bit 的 Symbol 传至弹性缓冲区（Elastic Buffer），此时时钟是 Rx CLock 的 8.125 分频，以适应 130 比特块中 16 字节数据。
 
 ### 4.2.3 Achieving Block Alignment
+Figure 12-20: EIEOS Symbol Pattern
+![](./images/12-20.png)
+在训练期间发送的 EIEOS 用于识别 130-bit Block 的边界。EIEOS 数据模式如图 12-20 所示，其由 00h 和 FFh 的交替 Symbol 组成，当接收端看到这种比特流模式时，最后一个 Symbol 被认为是 Block 边界，并验证接下来 130-bit 数据是否是 Block，若不是继续搜索 EIEOS 特定模式。spec 将这个过程描述为三个阶段：未对齐、对齐和锁定。
+- 未对齐（Unaligned Phase）：接收端经过一段时间电气空闲后进入这个阶段，如速率更改为 8.0 GT/s 或从低功耗链路状态退出。在此阶段块对齐模块监视 EIEOS 比特流模式到来，检测到到进入下一阶段。进入下一阶段前还需在接收到 SOS 后，根据 SOS 内容调整块对齐边界。
+- 对齐（Aligned Phase）：接收端继续监测 EIEOS，并在发现 EIEOS 时对其位和块对齐进行必要调整。此时由于已经暂时确定了块边界，还需检测 SDS 有序集来确定数据流的开始。当检测到 SDS 时，进行到锁定阶段。如果检测到未定义的 Sync Header（00b、11b），接收器将返回到未对齐阶段。spec 指出，训练期间会发生这种情况，EIEOS 后会紧跟 TS1/TS2。
+- 锁定（Locked Phase）：此时接收端不再调整其块对齐边界。此时如果需要重新调整对齐，则可能会丢失一些未对齐数据。如果接收到未定义的 Sync Header，则接收端可以返回到未对齐和对齐阶段。
+- 特殊情况：环回（Loopback）。spec 描述了当链路处于环回模式时的情况。环回主设备（Loopback Master）必须能在环回期间调整对齐，并允许发送 EIEOS，以及在 Loopback.Active 状态过程中根据检测到的 EIEOS 调整其接收端。环回从设备（Loopback Slave）必须能在 Loopback.Entry 期间调整对齐，不能在 Loopback.Active 期间调整对齐。当从设备开始回传比特流时，从设备的接收端被认为处于锁定阶段。
 ### 4.2.4 Block Type Detection
+在实现了块对齐之后，接收端将通过传入块的前两位（Sync Header），检测当前块的类型。该类型信息会被同步到物理层其他部分，以确定当前块的处理方式。时钟恢复机制和 Sync Header 检测完成从 130b 到 128b 的转换，该转换必须在物理层完成。
+
+请注意，由于此时每个 lane 的块信息相同，因此可以仅针对一个 lane 实现此逻辑。如果支持不同的链路宽度和 lane 反转，其他 lane 也需要包含这一逻辑。spec 对此对此进行细致规定。
+
 ## 4.3 Receiver Clock Compensation Logic
+
+
+
 ## 4.4 Lane-to-Lane Skew
 ## 4.5 Descambler
 ## 4.6 Byte Un-Striping
