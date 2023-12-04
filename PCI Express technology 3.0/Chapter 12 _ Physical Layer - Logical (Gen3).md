@@ -352,10 +352,14 @@ Gen3 发送端每 370~375 发送一次 SOS，但只能在数据流边界发送�
 ## 4.5 Descambler
 接收端遵循与发送端完全相同的加扰多项式生成规则，并简单地将相同的值再次与输入数据进行 XOR，以恢复原始数据。与发送端一样，可以所有 lane 用一个 LFSR，也可以每个 lane 单独一个。
 
-与 Gen1/Gen2 不同的是，Gen3 不能禁用解扰，因为它在时钟恢复和信号完整性方面发挥着重要作用。在Gen1/Gen2 中，TS1、TS2 控制字节中的“禁用加扰”
+与 Gen1/Gen2 不同的是，Gen3 不能禁用解扰，因为它在时钟恢复和信号完整性方面发挥着重要作用。在Gen1/Gen2 中，TS1、TS2 控制字节中的 “禁用加扰” 位用于通知邻居加扰特性被关闭。在 Gen3 及以上，该位保留不使用。
 
 ## 4.6 Byte Un-Striping
+字节拆分逻辑与 Gen1/Gen2 实现基本相同。
+
 ## 4.7 Packet Filtering
+
+
 ## 4.8 Receive Buffer (Rx Buffer)
 
 # 5. Notes Regarding Loopback with 128b/130b
