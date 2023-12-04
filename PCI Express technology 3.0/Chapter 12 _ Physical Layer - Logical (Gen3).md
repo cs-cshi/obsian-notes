@@ -358,8 +358,15 @@ Gen3 发送端每 370~375 发送一次 SOS，但只能在数据流边界发送�
 字节拆分逻辑与 Gen1/Gen2 实现基本相同。
 
 ## 4.7 Packet Filtering
-
+与 Gen1/Gen2 一样，byte un-striping 逻辑输出的串行字节流包含 TLP、DLLP、Logical Idles (IDLs) 和 Ordered Sets，其中逻辑空闲和 Ordered Set 在物理层处理，不会转发至上层（数据链路层），只有 TLP/DLLP 将和数据包类型指示器一起被转发的上层。
 
 ## 4.8 Receive Buffer (Rx Buffer)
+Rx 缓冲区保存收到的 TLPs 和 DLLPs，直到数据链路层接收它们。spec 没有描述数据链路层的接口，因此设计者可以自由选择总线宽度等细节。通道越宽，时钟频率越低，也需要更多的信号和逻辑来支撑。
 
 # 5. Notes Regarding Loopback with 128b/130b
+spec 描述环回模式在更高速率下进行的操作，其基本规则可以归纳为：
+- Loopback master 必须发送实际的有序集或数据块。但当从数据块变为有序集时，可以不遵循正常的协议规则，有序集变数据块同样不用遵循。即 SDS、EDS Token 不是必须，从机可以不检测。
+- Master 想往常一样发送 SOS，并且允许环回数据流中 SKP Synbols 数量不同，接收端同样执行时钟补偿。
+- Loopback slaves（从机）通过一次添加或删除 4 个 SKP Symbols 来修改 SOS，但产生 SOS 仍必须遵循正确的规则。
+- 除 SOS 可以像上述描述的进行更改外，其他包都需要按照规则进行环回，且 EIEOS、EIOS 在环回中定义了目的，应避免使用。
+- 如果从机无法块对齐，它将无法按照所有位进行环回，并允许根据需要添加或删除 Symbols 以继续操作。
