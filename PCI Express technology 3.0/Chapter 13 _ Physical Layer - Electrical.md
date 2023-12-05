@@ -66,10 +66,30 @@ SSC 是一种可选技术，用于在规定范围内缓慢调制时钟频率，�
 >PCIe 中数据信号的变化通常是在时钟信号的边沿上进行的，即在时钟信号的上升沿或下降沿上进行数据传输。PCIe规范要求在每个时钟周期内，在时钟的上升沿和下降沿之间传输一个数据位（或多个数据位），这意味着在两个连续的时钟边沿之间会有一个数据周期。
 >因此，信号相关频率为时钟频率的一半，是因为在数据传输中，信号变化发生在时钟的边沿上，每个时钟周期内有一个数据周期。这种设置使得在给定的时钟频率下，能够在受限的时间内有效地传输数据。
 
-
+<center>Figure 13-6: SSC Modulation Example</center>
+![](./images/13-6.png)
+SPEC 不要求使用 SSC，但如果支持SSC，需要适用以下规则：
+- 时钟可以在额定值（5000ppm）的基础上进行 +0% 至 -0.5% 的调制，称为“向下扩展”。虽然没有指定频率调制包络线，但类似于图 13-6 所示的锯齿波模式效果很好。需要注意的是，向下扩展需要权衡利弊，因为此时平均时钟频率将比不使用 SSC 时低 0.25%，从而导致性能略有下降。
+	- 包络线：将一段时间长度的高频信号的峰值点连线，就可以得到上方（正的）一条线和下方（负的）一条线，这两条线就叫包络线。 包络线就是反映高频信号幅度变化的曲线。
+- 调制速率必须在 30KHz 到 33 KHz 之间
+- 时钟频率精度仍适用于 +/- 300ppm。SPEC 规定大部分链路双方使用相同时钟源，如可都使用调制版 Refclk 来获得各自时钟。
 ## 5.3 Refclk Overview
+接收端需要生成自己的时钟来运行内部逻辑，但也可以从输入比特流生成恢复时钟，其详细信息随着版本、速率的提升而指定。
+### 5.3.1 2.5 GT/s
+Gen1 Refclk 信息未包含在 SPEC 中，而是包含在 PCIe 单独的 CEM（Card Electro-Mechanical） 规范中，其中规定了一些参数。Refclk 被描述为驱动 100Ω（+/- 10%）差分负载的 100 MHz 差分时钟，其走线长度限制为 4 英寸，并允许 SSC。
+### 5.3.2 5.0 GT/s
+从 Gen2 开始，SPEC 将 Refclk 信息包含在物理层电气部分，并列出了三种时钟架构：
+**Common Refclk.**
+<center>Figure 13-7: Shared Refclk Architecture</center>
+![](./images/13-7.png)
 
+**Data Clocked Rx Architecture.**
+<center>Figure 13-8: Data Clocked Rx Architecture</center>
+![](./images/13-8.png)
 
+**Separate Refclks.**
+<center>Figure 13-9: Separate Refclk Architecture</center>
+![](./images/13-9.png)
 # 6. Transmitter (Tx) Specs
 # 7. Receiver (Rx) Specs
 # 8. Signal Compensation
