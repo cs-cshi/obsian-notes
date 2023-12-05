@@ -78,14 +78,21 @@ SPEC 不要求使用 SSC，但如果支持SSC，需要适用以下规则：
 ### 5.3.1 2.5 GT/s
 Gen1 Refclk 信息未包含在 SPEC 中，而是包含在 PCIe 单独的 CEM（Card Electro-Mechanical） 规范中，其中规定了一些参数。Refclk 被描述为驱动 100Ω（+/- 10%）差分负载的 100 MHz 差分时钟，其走线长度限制为 4 英寸，并允许 SSC。
 ### 5.3.2 5.0 GT/s
-从 Gen2 开始，SPEC 将 Refclk 信息包含在物理层电气部分，并列出了三种时钟架构：
+从 Gen2 开始，SPEC 将 Refclk 信息包含在物理层电气部分，并列出了三种时钟架构：Common Refclk、Data Clocked Rx Architecture、Separate Refclks。
 **Common Refclk.**
 <center>Figure 13-7: Shared Refclk Architecture</center>
 ![](./images/13-7.png)
+链路双方使用相同的 Rcfclk，该实现方式具有三个优点：
+- 与参考时钟相关的抖动同时作用于 Rx、Tx，因此可以从本质上进行跟踪和计算
+- SSC 实现最简单，因为 Tx、Rx 时钟遵循相同的调制参考时钟，很容易保持 600ppm
+- 低功率链路状态 L0s、L1 期间，Refclk 仍可用，这使得接收端得 CDR 即使没有比特流提供数据边沿的情况下，也能保持恢复时钟，这也会使本地 PLL 不会像其他方式那样发生漂移，从而缩短恢复到 L0 的时间。
 
 **Data Clocked Rx Architecture.**
 <center>Figure 13-8: Data Clocked Rx Architecture</center>
 ![](./images/13-8.png)
+如上图所示，这种时钟结构中，接收端不适用参考时钟，而是从数据流中恢复发送端时钟。这种方式最为简单，也通常被优先采用。SPEC 没有禁止在此模式中使用 SSC，但使用 SSC 会存在两个问题：
+- 接收端 CDR 必须在更大的调试范围（5600ppm，而不是 600ppm）内保持对输入频率的锁定，这需要更复杂的逻辑。
+- 必须仍然保持 600ppm 的最大时钟间隔，而在没有共同基准的情况下，如果做到这点不太清楚。
 
 **Separate Refclks.**
 <center>Figure 13-9: Separate Refclk Architecture</center>
