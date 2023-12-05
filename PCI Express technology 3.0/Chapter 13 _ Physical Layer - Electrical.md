@@ -92,11 +92,15 @@ Gen1 Refclk 信息未包含在 SPEC 中，而是包含在 PCIe 单独的 CEM（C
 ![](./images/13-8.png)
 如上图所示，这种时钟结构中，接收端不适用参考时钟，而是从数据流中恢复发送端时钟。这种方式最为简单，也通常被优先采用。SPEC 没有禁止在此模式中使用 SSC，但使用 SSC 会存在两个问题：
 - 接收端 CDR 必须在更大的调试范围（5600ppm，而不是 600ppm）内保持对输入频率的锁定，这需要更复杂的逻辑。
-- 必须仍然保持 600ppm 的最大时钟间隔，而在没有共同基准的情况下，如果做到这点不太清楚。
+- 必须仍然保持 600ppm 的最大时钟间隔，而且在没有共同基准的情况下，如何做到这点 SPEC 中没有说明。
 
 **Separate Refclks.**
 <center>Figure 13-9: Separate Refclk Architecture</center>
 ![](./images/13-9.png)
+链路双方可以使用不同的参考时钟，但是这种实现方式对参考时钟要求大大提高，因为接收端看到的抖动将是两者的 RSS（平方根）的结合，从而使时间预算变得困难，此时管理 SSC 也会更加困难。这种实现方式下，SPEC 规定必须关闭 SSC。该方案通常不用。
+### 5.3.3 8.0 GT/s
+Gen3 下SPEC 中同样讲述了与 Gen2 相同的时钟框架。不同之处在于 Gen3 定义了两种 CDR：共享 Refclk 架构的一阶 CDR 和数据时钟架构的二阶 CDR。与较低速率的情况一样，数据时钟架构的 CDR 需要更加复杂，以在 SSC 的基准变化范围较大时保持锁定。
+
 # 6. Transmitter (Tx) Specs
 # 7. Receiver (Rx) Specs
 # 8. Signal Compensation
