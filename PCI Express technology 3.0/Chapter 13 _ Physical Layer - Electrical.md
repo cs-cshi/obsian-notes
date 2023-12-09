@@ -142,8 +142,20 @@ SPEC 中提到一个可能出现的问题：适当的负载可能会出现在一
 在链路训练的检测状态之后，发送端直流（DC）共模电压 $V_{TX-DC-CM}$ 必须保持相同的电压。共模电压仅在 L2 或 L3 低功耗链路状态下关闭，该状态下设备主电源被移除，设计人员可以选择 0~3.6V 范围内任何共模电压。
 
 ### 6.5.2 Full-Swing Differential Voltage
+发送端输出 D+、D- 两个极性相反信号，D+ 为高低平、D- 为低电平表示 1，反之表示 0，如图 13-12 所示。
+<center>Figure 13-12: Differential Signaling</center>
+![](./images/13-12.png)
+发送端驱动的差分峰值电压 $V_{TX-DIFFp-p}$ 介于 800mV 和 1200 mV （Gen3 1300mV）之间。在电气空闲期间，发送端保持差分峰值电压 $V_{TX-IDLE-DIFFp}$ 接近于 0（0-20mV），此时发送端可能处于低阻抗或高阻抗状态。
+接收端通过链路上的电压来感测逻辑 1 或 0，以及电气空闲。此外在高频时还要能够预期的信号损失。
 
-
+### 6.5.3 Differential Notation
+差分信号电压通过两个导体 D+ 和 D- 上的电压差来定义。两个导体相对于地的电压为 $V_{D+}$ 和 $V_{D-}$，差分电压由下式给出：$V_{CM} = (V_{D+} + V_{D-}) / 2$ 。 
+术语：
+- Differential Peak Voltage => $V_{DIFFp}=(max |V_{D+}-V_{D-}|)$
+- Differential Peak-to-Peak Voltage => $V_{DIFFp-p} = 2 * (max |V_{D+} - V_{D-}|)$
+<center>Figure 13-13: Differential Peak-to-Peak and Peak Voltages</center>
+![](./images/13-13.png)
+假设 $V_{CM} = 0$ V，如果 D+ 为 300 mV，D- 为 -300mV，则对于逻辑 1， $V_{DIFFp} = 600 mV$ ，逻辑 0 $V_{DIFFp} = -600 mV$ ，因此 $V_{DIFFp-p} = 1200mV$，Gen1/2 允许 $V_{DIFFp-p}$ 范围是 800-1200mV，对于 Gen3，在均衡（equalization）之前 是 800-1300mV。
 # 7. Receiver (Rx) Specs
 # 8. Signal Compensation
 # 9. Eye Diagram
