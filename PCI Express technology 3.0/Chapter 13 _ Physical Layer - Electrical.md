@@ -166,9 +166,24 @@ SPEC 中提到一个可能出现的问题：适当的负载可能会出现在一
 这部分内容在接收端 “信号补偿” 小节介绍（#TODO）
 
 ### 6.5.6 Voltage Margining
+>Voltage Margining，电压余量测试或电压裕度测试， 指测试或评估电子设备/系统时，通过对电压微小的调整，验证设备对电压变化的容忍程度或性能，确定设备的稳定性和可靠性。
 
+Gen1 没有此功能，Gen2 及以上发送端具有此功能。裕度调整的粒度必须基于链路可控并且可以基于通道可控，该控制通过 PCIe 功能寄存器块中的链路控制 2 寄存器来完成。发送余量字段（transmit margin field）包含 3 位，可以表示 8 个级别，如图 13-14 所示。默认值全为 0，表示正常工作范围。
+<center>Figure 13-14: Transmit Margin Field in Link Control 2 Register</center>
+![](./images/13-14.png)
+Gen3 发送端需要实现电压裕度并使用链路控制 2 寄存器（Link Control 2 register）中相同字段，但 equalization 对选项增加了一些限制，因为它不需要比 1/24 更精细的系数或预设分辨率。
+Tx 裕度调整期间，Gen1/Gen2 的均衡容差（equalization tolerance）从 +/- 0.5dB 放宽到 +/- 1.0dB。对于 Gen3，容差由发送端指定的系数力度和正常均衡器容差定义。
 
 # 7. Receiver (Rx) Specs
+## 7.1 Receiver Impedance
+接收端需要满足 $RL_{RX-DIFF}$ 和 $RL_{RX-CM}$ 参数，除非器件断点，如 L2/L3 电源状态下或基本复位期间，这些情况下接收端进入高阻抗状态，满足 $Z_{RX-HIGH-IMP-DC-POS}$ 和 $Z_{RX-HIGH-IMP-DC-NEC}$ 。
+
+## 7.2 Receiver DC Common Mode Voltage
+<center>Figure 13-15: Receiver DC Common-Mode Voltage Adjustment</center>
+![](./images/13-15.png)
+对于所有速率，接收端直流（DC）共模电压指定为 0V，图 13-15 中用接地信号$V_{RX-CM}$表示。
+
+
 # 8. Signal Compensation
 # 9. Eye Diagram
 # 10. Transmitter Driver Characteristics
