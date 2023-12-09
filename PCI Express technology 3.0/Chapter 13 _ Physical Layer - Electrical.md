@@ -156,6 +156,18 @@ SPEC 中提到一个可能出现的问题：适当的负载可能会出现在一
 <center>Figure 13-13: Differential Peak-to-Peak and Peak Voltages</center>
 ![](./images/13-13.png)
 假设 $V_{CM} = 0$ V，如果 D+ 为 300 mV，D- 为 -300mV，则对于逻辑 1， $V_{DIFFp} = 600 mV$ ，逻辑 0 $V_{DIFFp} = -600 mV$ ，因此 $V_{DIFFp-p} = 1200mV$，Gen1/2 允许 $V_{DIFFp-p}$ 范围是 800-1200mV，对于 Gen3，在均衡（equalization）之前 是 800-1300mV。
+
+### 6.5.4 Reduced-Swing Differential Voltage
+对于长链路或有损链路，需要使用全摆幅电压（full-swing voltage），并需要发送端提供支撑。对于 Gen1/Gen2 短链路，SPEC 为其定义了功率敏感系统，使用降低的摆幅电压，其只有全摆幅电压的一半左右。该实现可选。
+
+对于 Gen3，只需要设置 Tx 系数（Tx coeffifient value）可实现减少摆幅，该功能实现可选。需要注意的是，接收端电压与发送端无关：接收端信号时钟满足正常需求，发送端和 lane 的设计需要保证这一点。
+
+### 6.5.5 Equalized Voltage
+这部分内容在接收端 “信号补偿” 小节介绍（#TODO）
+
+### 6.5.6 Voltage Margining
+
+
 # 7. Receiver (Rx) Specs
 # 8. Signal Compensation
 # 9. Eye Diagram
