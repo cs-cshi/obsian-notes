@@ -191,10 +191,26 @@ Tx 裕度调整期间，Gen1/Gen2 的均衡容差（equalization tolerance）从
 发送端驱动 800mV 的最小差分峰值电压 $V_{TX-DIFFp-p}$ ，接收端敏感度设计为最小差分峰值电压 $V_{RX-DIFFp-p}$ 为 175 mV。这意味着链路设计时的损耗预算为 13.2dB。尽管电路板设计人员可以根据不同频率确定链路的衰减损耗预算，但发送端和接收端眼图测量是链路损耗预算的决定因素。驱动高达 1200 mV的最大允许差分峰值电压的发送端可以补偿具有最坏情况衰减特性的有损链路。
 
 ## 7.4 AC Coupling
-PCIe 要求每个 lane 上放置串联交流耦合电容器（in-line AC-coupling capacitors），通常靠近发送端。电容器可以集成到系统板上，或者集成到设备本身。
-
+PCIe 要求每个 lane 上放置串联交流耦合电容器（in-line AC-coupling capacitors），通常靠近发送端。电容器可以集成到系统板上，或者集成到设备本身（需要大尺寸，不太可能）。带有 PCIe 设备的附加卡（add-in card）必须将卡上的电容器放置在靠近发送端位置，或集成到 PCIe 芯片中。这些电容器在链路两端的两个设备之间提供直流隔离，从而允许设备使用独立的电源和接地层，简化设备设计。
 
 # 8. Signal Compensation
+## 8.1 De-emphasis Associated with Gen1 and Gen2 PCIe
+Gen1、Gen2 发送端使用被称为去加重（de-emphasis）的均衡形式，以减少链路传输中信号失真的影响。这种失真始终存在，并且随着频率增加和有损传输线而愈发严重。
+
+### 8.1.1 The Problem
+随着数据速率提升，单位间隔（bit time）变得更小，越来越难避免一个比特位的值影响另一位的值。lane 总会抑制电压的变化，电压切换的越快，这种抑制就越明显。当信号连续多个位保持相同电压时，lane 中的电压会更趋近于目标电压，致使当极性发生变化时，很难及时切换至目标电压。这种先前 bit 印象后续 bit 的问题被称为 ISI（inter-symbol interference）。
+
+### 8.1.2 How Does De-Emphasis Help?
+去加重可降低比特流中重复比特的电压。去加重会减少信号的摆幅，从而减少到达接收端的能量，但是这些情况下降低发送端电压可以显著提高信号质量。图 13-16 说明了其工作原理。图中发送“1000010000”展示过程，其中相同极性的重复位已被弱化。去加重可以被认为是 two-tap Tx 均衡器，与之相关的规则是：
+1. 当信号变成与前一位相反的极性时，它不会减弱，而是使用 $V_{TX-DIFFp-p}$ 指定的峰间差分电压。
+2. 连续相同极性位的第一位不会被 de-emphasis
+3. 对于 Gen1，去加重后电压比正常电压降低了 3.5 dB，意味着电压降低了大约 1/3。
+> dB（分贝）用于描述信号增强或衰减程度时，通常指信号的相对变化或增益。分贝值可以用以下公式来计算
+> $dB = 20\times \log_$ 
+
+<center>Figure 13-16: Transmission with De-emphasis</center>
+![](./images/13-16.png)
+
 # 9. Eye Diagram
 # 10. Transmitter Driver Characteristics
 # 11. Receiver Characteristics
