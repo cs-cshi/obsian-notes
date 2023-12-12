@@ -319,23 +319,3 @@ Gen3 没有 COM 字符，但仍可以通过 ordered set 提供时序对齐。
 
 如果物理层向 DLLP 报告一个接收器错误，那么 DLLP 会丢弃当前接收的 TLP 并释放为该 TLP 分配的存储资源，并发送 NAK DLLP，这样接收端从缓冲区种放 TLP。DLLP 也可以让物理层进行链路重新训练（链路恢复）。
 如果实现了 PCI Express 扩展高级错误功能寄存器集，则接收器错误会设置可纠正错误状态寄存器中的接收器错误状态位。如果启用，设备可以向 Root Complex 发送 ERR_COR（可纠正错误）消息。
-# Chapter 12: Physical Layer-Logical (Gen3)
-## 12.1 Introduction to Gen3
-## 12.2 Encoding for 8.0 GT/s
-## 12.3 Gen3 Physical Layer Transmit Logic
-## 12.4 Gen3 Physical Layer Receive Logic
-## 12.5 Notes Regarding Loopback with 128b/130b
-# Chapter 13: Physical Layer-Electrical
-## 13.1 Backward Compatibility
-## 13.2 Component Interfaces
-## 13.3 Physical Layer Electrical Overview
-## 13.4 High Speed Signaling
-## 13.5 Clock Requirements
-## 13.6 Transmitter (Tx) Specs
-## 13.7 Receiver (Rx) Specs
-## 13.8 Signal Compensation
-## 13.9 Eye Diagram
-## 13.10 Transmitter Driver Characteristics
-## 13.11 Receiver Characteristics
-## 13.12 Receiver Characteristics
-## 13.13 Link Power Management States
