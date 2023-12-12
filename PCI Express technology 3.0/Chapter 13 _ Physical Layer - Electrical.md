@@ -206,7 +206,8 @@ Gen1、Gen2 发送端使用被称为去加重（de-emphasis）的均衡形式，
 2. 连续相同极性位的第一位不会被 de-emphasis
 3. 对于 Gen1，去加重后电压比正常电压降低了 3.5 dB，意味着电压降低了大约 1/3。
 > dB（分贝）用于描述信号增强或衰减程度时，通常指信号的相对变化或增益。分贝值可以用以下公式来计算
-> $dB = 20\times \log_$ 
+> $dB = 20\times \log_
+> $ 
 
 <center>Figure 13-16: Transmission with De-emphasis</center>
 ![](./images/13-16.png)
