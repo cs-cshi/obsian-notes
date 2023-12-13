@@ -215,7 +215,7 @@ Gen1、Gen2 发送端使用被称为去加重（de-emphasis）的均衡形式，
 Gen1 de-emphasis 值是 3.5dB，即相同极性第一位之后所有位降低 3.5dB，以适用最坏情况的损耗。de-emphasis 本质上是以与传输过程中预期失真相反的方式是信号失真，从而将其抵消。如果失真很小或者没有失真，那么 de-emphasis 将使信号看起来更糟。因此对低损耗环境，以及非常短的路径，de-emphasis 可能会使接收到的信号更糟。SPEC 没有介绍任何测试环境或调整 de-emphasis级别的方法。
 <center>Figure 13-17: Benefit of De-emphasis at the Receiver</center>
 ![](./images/13-17.png)
-图 13-17 展示了 de-emphasis
+图 13-17 展示了 de-emphasis 的示例。该图是将示波器捕获转换为绘图，图中迹线显示差分对一侧的位模式（也称单端信号）具有 2 位同极性，后跟 5 位相反极性。对于 8b/10b 来说，五个连续同极性位是最坏情况，这种模式仅在少数 Symbol 中，如 COM。该通道（channel）能抵抗高速变化，但如果驱动器bu'duan
 
 ### 8.1.4 Solution for 5.0 GT/s
 
