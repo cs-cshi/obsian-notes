@@ -215,9 +215,29 @@ Gen1、Gen2 发送端使用被称为去加重（de-emphasis）的均衡形式，
 Gen1 de-emphasis 值是 3.5dB，即相同极性第一位之后所有位降低 3.5dB，以适用最坏情况的损耗。de-emphasis 本质上是以与传输过程中预期失真相反的方式是信号失真，从而将其抵消。如果失真很小或者没有失真，那么 de-emphasis 将使信号看起来更糟。因此对低损耗环境，以及非常短的路径，de-emphasis 可能会使接收到的信号更糟。SPEC 没有介绍任何测试环境或调整 de-emphasis级别的方法。
 <center>Figure 13-17: Benefit of De-emphasis at the Receiver</center>
 ![](./images/13-17.png)
-图 13-17 展示了 de-emphasis 的示例。该图是将示波器捕获转换为绘图，图中迹线显示差分对一侧的位模式（也称单端信号）具有 2 位同极性，后跟 5 位相反极性。对于 8b/10b 来说，五个连续同极性位是最坏情况，这种模式仅在少数 Symbol 中，如 COM。该通道（channel）能抵抗高速变化，但如果驱动器bu'duan
+图 13-17 展示了 de-emphasis 的示例。该图是将示波器捕获转换为绘图，图中迹线显示差分对一侧的位模式（也称单端信号）具有 2 位同极性，后跟 5 位相反极性。对于 8b/10b 来说，五个连续同极性位是最坏情况，这种模式仅在少数 Symbol 中，如 COM。该通道（channel）能抵抗高速变化，但如果驱动器不断尝试达到更高电压，通道将继续充电，当产生变化时，无法在该位的 UI 期间达到良好的信号值，如图中红圈部门。
+
+图中下半部分加入的 de-emphasis 后的信号变化，可以看到 de-emphasis 能够防止通道电压充电过多，产生更为清晰的信号，后面的位不会受到前面位很大的影响。这能改善时序抖动及电压电平，使受到的信号在该位时间内接近正常的电压摆幅。
+<center>Figure 13-18: Benefit of De-emphasis at Receiver Shown With Differential Signal</center>
+![](./images/13-18.png)
+图 13-18 显示了差分信号的正版本和负版本，以说明所得到眼图张开情况。de-emphasis 后信号质量的改善很明显，因为连续相同极性位后下一位电压更接近于正常摆幅。
 
 ### 8.1.4 Solution for 5.0 GT/s
+随着速率的提升，ISI 问题会加剧，因为位时间变小，需要更加健壮的均衡技术。Gen2 5 GT/s 是在 Gen1 的基础上做的提升，具体有：
+1. 当以 Gen1 2.5 GT/s 速率时，de-emphasis 是 -3.5 dB
+2. Gen2 速率时，推荐使用 -6.0 dB去加重。如图 13-19 所示，降低 3.5 dB 代表电压衰减 33%，降低 6 dB 代表电压下降 50%。注意电压和功率的 dB 测量值相差两倍，3 dB 代表功率变化 50%，而电压仅变化 25%。
+<center>Figure 13-19: De-emphasis Options for 5.0 GT/s</center>
+![](./images/13-19.png)
+3. 通常发射端在全摆幅（full-swing）模式下运行，并使用整个可用电压范围帮助克服信号衰减。如图 13-20 所示，电压需要从较高的值开始进行补偿损耗。对于 Gen2，提供了另外一种  reduced-swing 模式，以支持短、低损耗的信号环境，如图中下半部分所示，其将电压摆幅减少约一半以节省功耗。该模式还可以通过完全关闭 de-emphasis 来提供第三种 de-emphasis 选项，因为在低损耗、非常短的路径信号可能不会失真，de-emphasis 可能带来更糟效果。
+<center>Figure 13-20: Reduced-Swing Option for 5.0 GT/s with No De-emphasis</center>
+![](./images/13-20.png)
+
+## 8.2 Solution for 8.0 GT/s - Transmitter Equalization
+### 8.2.1 Three-Tap Tx Equalizer Required
+### 8.2.2 Pre-shoot, De-emphasis, and Boost
+### 8.2.3 Presets and Ratios
+### 8.2.4 Equalizer Coefficients
+### 8.2.5 Beacon Signaling
 
 # 9. Eye Diagram
 # 10. Transmitter Driver Characteristics
