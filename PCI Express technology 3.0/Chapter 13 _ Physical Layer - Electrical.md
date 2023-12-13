@@ -203,14 +203,21 @@ Gen1、Gen2 发送端使用被称为去加重（de-emphasis）的均衡形式，
 ### 8.1.2 How Does De-Emphasis Help?
 去加重可降低比特流中重复比特的电压。去加重会减少信号的摆幅，从而减少到达接收端的能量，但是这些情况下降低发送端电压可以显著提高信号质量。图 13-16 说明了其工作原理。图中发送“1000010000”展示过程，其中相同极性的重复位已被弱化。去加重可以被认为是 two-tap Tx 均衡器，与之相关的规则是：
 1. 当信号变成与前一位相反的极性时，它不会减弱，而是使用 $V_{TX-DIFFp-p}$ 指定的峰间差分电压。
-2. 连续相同极性位的第一位不会被 de-emphasis
+2. 连续相同极性位的第一位不会被 de-emphasis，仅第一位之后具有相同极性位被 de-emphasis
 3. 对于 Gen1，去加重后电压比正常电压降低了 3.5 dB，意味着电压降低了大约 1/3。
-> dB（分贝）用于描述信号增强或衰减程度时，通常指信号的相对变化或增益。分贝值可以用以下公式来计算
-> $dB = 20\times \log_
-> $ 
-
+4. Beacon signal 也会被 de-emphasis，只是使用规则略有不同
+> dB（分贝）用于描述信号增强或衰减程度时，通常指信号的相对变化或增益。分贝值可以用以下公式来计算： $dB = 20 \times \log_{10}{\frac{V_{out}}{V_{in}}}$
+> 其中 $V_{out}$ 是输出信号电压，$V_{in}$ 是输入信号电压。如果输出信号电压大于输入信号，分贝为正数，表示增益。
+> dB 也可用于计算功耗变化，其公式为：$dB = 10 \times log_{10}{\frac{P_{out}}{P_{in}}}$
 <center>Figure 13-16: Transmission with De-emphasis</center>
 ![](./images/13-16.png)
+### 8.1.3 Solution for 2.5 GT/s
+Gen1 de-emphasis 值是 3.5dB，即相同极性第一位之后所有位降低 3.5dB，以适用最坏情况的损耗。de-emphasis 本质上是以与传输过程中预期失真相反的方式是信号失真，从而将其抵消。如果失真很小或者没有失真，那么 de-emphasis 将使信号看起来更糟。因此对低损耗环境，以及非常短的路径，de-emphasis 可能会使接收到的信号更糟。SPEC 没有介绍任何测试环境或调整 de-emphasis级别的方法。
+<center>Figure 13-17: Benefit of De-emphasis at the Receiver</center>
+![](./images/13-17.png)
+图 13-17 展示了 de-emphasis
+
+### 8.1.4 Solution for 5.0 GT/s
 
 # 9. Eye Diagram
 # 10. Transmitter Driver Characteristics
