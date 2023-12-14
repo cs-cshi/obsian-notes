@@ -233,7 +233,20 @@ Gen1 de-emphasis 值是 3.5dB，即相同极性第一位之后所有位降低 3.
 ![](./images/13-20.png)
 
 ## 8.2 Solution for 8.0 GT/s - Transmitter Equalization
+当达到 Gen3 8.0 GT/s 速率时，信号调节模型发生了显著变化。发送端均衡机制更为复杂，并使用握手训练过程以适应实际信号环境，而不是对所需内容进行假设。评估链路具体查看 “Recovery.Equalization” 部分。该过程允许接收端请求链路发送端使用特定的系数组合，然后接收端测试接收到的信号效果，如果信号不够好，会建议使用其他信号。
+
+即使有握手过程，系数也是一个近似值，在训练完成时效果很好，但在其他条件下可能效果好，也可能不好，其系数是训练过程中得到的较好值。其次，Gen3 只需要达到 $10^{-12}$ 这样最低的 BER（Bit Error Rate），并且验证所需时间不像 $10^{-15}$ 那么长。
+
 ### 8.2.1 Three-Tap Tx Equalizer Required
+<center> Figure 13-21: 3-Tap Tx Equalizer </center>
+![](./images/13-21.png)
+为了在发送端上实现更好的 wave shaping，SPEC 要求使用 3-tap FIR（Finite Impulse Response，有限脉冲响应），即具有 3 bit-time-spaced 输入的滤波器，其概要图如图 13-21 所示。从中可以看出输出电压是 3 种输入的总和：原始输入、延迟一个 bit time，延迟另一个 bit 时间。这种类型的 FIR 滤波器通常用于 6.0 Gb/s 以上的 SERDES 中，并且对 PCIe 很有帮助，因为它的补偿基于通道在更长时间内传播信号。另一种实现方式是，在给定的位同时，受其之前一位和之后一位的值影响。
+
+如图 13-22 所示，可以将三种输入基于时序位置描述为 "pre-cursor" $C_{-1}$ 、"cursor" $C_{0}$ 、"post-cursor" $C_{+1}$ ，它们组合起来根据即将到来的输入创建一个输出，即当前值和前一个值。调整 taps 系数可以优化输出的波形。通过查看单个脉冲可以很轻松的看出对信号的调整。
+
+滤波器根据分配给每个 tap 系数值（权重）对输出进行调整。三个系数绝对值之和为 1，SPEC 中仅给出 $C_{-1}$ 和 $C_{+1}$ ，$C_{0}$ 始终为正值。
+
+
 ### 8.2.2 Pre-shoot, De-emphasis, and Boost
 ### 8.2.3 Presets and Ratios
 ### 8.2.4 Equalizer Coefficients
