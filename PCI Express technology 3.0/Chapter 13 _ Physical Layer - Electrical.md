@@ -250,7 +250,14 @@ Gen1 de-emphasis 值是 3.5dB，即相同极性第一位之后所有位降低 3.
 系数值的作用是调整输出电压，以创建 4 种不同的电压电平，适应不同的信号环境，如图 13-23 所示。波形显示了要传输的 4 种通用电压：maximum-height(Vd)、normal(Va)、de-emphasized(Vb) 和 pre-shoot(Vc)。
 <center>Figure 13-23: 8.0 GT/s Tx Voltage Level</center>
 ![](./images/13-23.png)
-该方案向后兼容仅使用 de-emphasis 的 Gen1、Gen2，因为 pre-shoot 和 de-emphasis 可以独立定义。de-emphasis 机制与 Gen1/Gen2 一致，只是范围更大（0~-6dB）。Pre-shoot 是新功能，旨在通过提升当前位时间内（UI）的电压来改善后续位时间内（UI）的信号。Maximum
+该方案向后兼容仅使用 de-emphasis 的 Gen1、Gen2，因为 pre-shoot 和 de-emphasis 可以独立定义。de-emphasis 机制与 Gen1/Gen2 一致，只是范围更大（0~-6dB）。Pre-shoot 是新功能，旨在通过提升当前位时间内（UI）的电压来改善后续位时间内（UI）的信号。Maximum value 是 $C_{-1}$ 、 $C_{1}$ 为 0，$C_{0}$ 为 1 时的情形。上述策略应用规则如下：
+- 当相邻位两侧极性相反，电压为 Vd
+- 当发送重复 n 位时
+	- 第 1 位 Va
+	- (1,n) 位 使用 Vb，注意不含 1、n
+	- 最后一位 n 使用 Vc
+### 8.2.3 Presets and Ratios
+后续 "Recovery.Equalization" 中会讲到，当链路准备从 Gen1/Gen2 更改为 Gen3 时，下游端口（Downstream Port）发送 EQ TS2s，为上游端口提供一组预设值，以用于开始链路信号质量的初始值。表 13-1 给出了 11 个可能的预设列表及其相应的系数值和电压比。注意，电压以相对最大值的比率给出，以适配早期 SPEC 版本。注意 P4 不使用 de-emphasis/preshoot，
 
 
 ### 8.2.2 Pre-shoot, De-emphasis, and Boost
