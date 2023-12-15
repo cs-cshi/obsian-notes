@@ -262,6 +262,15 @@ Gen1 de-emphasis 值是 3.5dB，即相同极性第一位之后所有位降低 3.
 ![](./images/table13-1.png)
 
 ### 8.2.4 Equalizer Coefficients
+Presets 能让设备首次训练到 Gen3 8.0 GT/s 速率时使用 11 个可能的起始值之一作为链路双方发送端的系数。这通过训练期间发送 EQ TS1 和 EQ TS2 来实现，训练期间将 Tx 均衡的粗调作为起点，如果使用 preset，信号能达到低于 $10^{-12}$ 错误率，则无需进一步训练。但如果错误率太高，则需要使用均衡序列（equalization sequence）来微调系数设置，其方法是尝试不同的 $C_{-1}$ 和 $C_{+1}$ 值并评估结果，重复该序列，直到达到所需的信号质量或错误率。
+
+Gen3 发送端需要向其对应接收端协商其支持的系数范围，其具有如下规则：
+- 设备必须支持表 13-1 所列出的所有 presets 值
+- 发送端必须满足 full-swing $V_{TX-EIEOS-FS}$ 的约束
+- 发送端可以选择支持 reduced-swing，如果支持必须满足 $V_{TX-EIEOS-RS}$ 的约束
+- 系数必须满足升压限制（$V_{TX-BOOST-FS = 8.0dB\;min\quad V_{TX-BOOST-RS} = 2.5 dB\;min}$），以及resolution 限制（$EQ_{TX-DOEFF-RESS}=1/24 \, max \, to \, 1/63 \, min$）
+
+应用这些约束并使用最大粒度 1/24 为每个设置创建 pre-shoot、de-emphasis 和 boost values 的列表。SPEC 中
 
 
 ### 8.2.2 Pre-shoot, De-emphasis, and Boost
