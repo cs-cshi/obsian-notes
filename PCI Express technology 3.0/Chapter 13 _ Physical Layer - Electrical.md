@@ -258,7 +258,10 @@ Gen1 de-emphasis 值是 3.5dB，即相同极性第一位之后所有位降低 3.
 	- 最后一位 n 使用 Vc
 ### 8.2.3 Presets and Ratios
 后续 "Recovery.Equalization" 中会讲到，当链路准备从 Gen1/Gen2 更改为 Gen3 时，下游端口（Downstream Port）发送 EQ TS2s，为上游端口提供一组预设值，以用于开始链路信号质量的初始值。表 13-1 给出了 11 个可能的预设列表及其相应的系数值和电压比。注意，电压以相对最大值的比率给出，以适配早期 SPEC 版本。注意 P4 不使用 de-emphasis/preshoot，所有电压值都是最大值，比率均为 1.000。
+<center> Table13-1: Tx Preset Encodings with Coefficients and Voltage Ratios</center>
 ![](./images/table13-1.png)
+
+### 8.2.4 Equalizer Coefficients
 
 
 ### 8.2.2 Pre-shoot, De-emphasis, and Boost
