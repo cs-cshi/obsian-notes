@@ -311,7 +311,6 @@ Gen3 没有 COM 字符，但仍可以通过 ordered set 提供时序对齐。
 - 8b/10b 解码错误：一致性检查、规则编码检查
 
 可选错误：
-
 - loss of Symbol lock
 - Elastic Buffer 上/下溢
 - lane 去偏移错误，lane deskew errors

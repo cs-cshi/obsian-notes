@@ -246,6 +246,12 @@ Gen1 de-emphasis 值是 3.5dB，即相同极性第一位之后所有位降低 3.
 
 滤波器根据分配给每个 tap 系数值（权重）对输出进行调整。三个系数绝对值之和为 1，SPEC 中仅给出 $C_{-1}$ 和 $C_{+1}$ ，$C_{0}$ 始终为正值。
 
+### 8.2.2 Pre-shoot, De-emphasis, and Boost
+系数值的作用是调整输出电压，以创建 4 种不同的电压电平，适应不同的信号环境，如图 13-23 所示。波形显示了要传输的 4 种通用电压：maximum-height(Vd)、normal(Va)、de-emphasized(Vb) 和 pre-shoot(Vc)。
+<center>Figure 13-23: 8.0 GT/s Tx Voltage Level</center>
+![](./images/13-23.png)
+该方案向后兼容仅使用 de-emphasis 的 Gen1、Gen2，因为 pre-shoot 和 de-emphasis 可以独立定义。de-emphasis 机制与 Gen1/Gen2 一致，只是范围更大（0~-6dB）。Pre-shoot 是新功能，旨在通过提升当前位时间内（UI）的电压来改善后续位时间内（UI）的信号。Maximum
+
 
 ### 8.2.2 Pre-shoot, De-emphasis, and Boost
 ### 8.2.3 Presets and Ratios
