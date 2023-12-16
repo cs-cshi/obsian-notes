@@ -270,8 +270,11 @@ Gen3 发送端需要向其对应接收端协商其支持的系数范围，其具
 - 发送端可以选择支持 reduced-swing，如果支持必须满足 $V_{TX-EIEOS-RS}$ 的约束
 - 系数必须满足升压限制（$V_{TX-BOOST-FS = 8.0dB\;min\quad V_{TX-BOOST-RS} = 2.5 dB\;min}$），以及resolution 限制（$EQ_{TX-DOEFF-RESS}=1/24 \, max \, to \, 1/63 \, min$）
 
-应用这些约束并使用最大粒度 1/24 为每个设置创建 pre-shoot、de-emphasis 和 boost values 的列表。SPEC 中
+应用这些约束并使用最大粒度 1/24 为每个设置创建 pre-shoot、de-emphasis 和 boost values 的列表。SPEC 中给出了表 13-2 中值，其中空白项是因为 boost value 不能超过 8.0 +/- 1.5 dB = 9.5 dB。表格中右下角对角线边界，在 full-swing 情况下升压达到了 9.5 dB，reduced- swing 时只能达到 3.5 dB。绿色底色的 6 项是 full-swing/reduced-swing 都支持的 presets，橙色底色 4 个是仅支持 full-swing 的 presets。
+<center>Table 13-2: Tx Coefficient Table</center>
+![](./images/table13-2.png)
 
+**Coefficient Example:** 以 preset number P7 为例，对系数进行深入说明。P7 中 $C_{-1}$ 为 -0.100，$C_{+1}$ 为 -0.200，而 $|C_{-1}| + |C_{0}| + |C_{+1}| = 1$，因此 $C_{0}=0.700$。将这些值与 SPEC 中给出系数表 13-2 进行匹配，这需要进行转换，因为系数表给出的是分数。对于 P7 preset 值，$ C_{-1} = 0.100 \approx 2/24(0.083), \, 0.200 \approx 5/24 (0.208)$
 
 ### 8.2.2 Pre-shoot, De-emphasis, and Boost
 ### 8.2.3 Presets and Ratios
