@@ -274,7 +274,7 @@ Gen3 发送端需要向其对应接收端协商其支持的系数范围，其具
 <center>Table 13-2: Tx Coefficient Table</center>
 ![](./images/table13-2.png)
 
-**Coefficient Example:** 以 preset number P7 为例，对系数进行深入说明。P7 中 $C_{-1}$ 为 -0.100，$C_{+1}$ 为 -0.200，而 $|C_{-1}| + |C_{0}| + |C_{+1}| = 1$，因此 $C_{0}=0.700$。将这些值与 SPEC 中给出系数表 13-2 进行匹配，这需要进行转换，因为系数表给出的是分数。对于 P7 preset 值，$ C_{-1} = 0.100 \approx 2/24(0.083), \, 0.200 \approx 5/24 (0.208)$
+**Coefficient Example:** 以 preset number P7 为例，对系数进行深入说明。P7 中 $C_{-1}$ 为 -0.100，$C_{+1}$ 为 -0.200，而 $|C_{-1}| + |C_{0}| + |C_{+1}| = 1$，因此 $C_{0}=0.700$。将这些值与 SPEC 中给出系数表 13-2 进行匹配，这需要进行转换，因为系数表给出的是分数。对于 P7 preset 值，$C_{-1} = 0.100 \approx 2/24(0.083), \, C_{+1}=0.200 \approx 5/24 (0.208)$。该值在系数表中突出显示，确信其值为正确值。在 preset 表中，P7 给出了 pre-shoot 为 3.5 dB +/- 1 dB，系数表中显示 2.9 dB，如果对系数值的粒度差异 $0.083/0.100 * 3.5 = 2.9$，将能得到相同的 preset 值。de-emphasis 系数值差异小很多（0.200 vs. 0.208），因此两个表 de-emphasis 都为 6.0 dB。
 
 ### 8.2.2 Pre-shoot, De-emphasis, and Boost
 ### 8.2.3 Presets and Ratios
