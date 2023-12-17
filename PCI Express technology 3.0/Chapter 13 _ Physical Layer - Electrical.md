@@ -295,10 +295,21 @@ Presets 系数在链路速率变为 Gen3 之前完全交换，在链路均衡过
 **Reduced Swing**：发送端可以支持减小摆幅信号（从 Gen2 开始可选支持此功能），这样在短、低损耗的传输路径中实现节能和更好的信号。此时输出的电压具有与全摆幅 full-swing 相同的 1300 mV 最大值，但允许较低的 232 mV 最小电压，可由 $V_{TX-EIEOS-RS}$ 定义。由于 Reduced-swing 下支持的最大 boost 最大为 3.5 dB，因此此时所支持的 Preset 数量会有限制。
 
 ## 8.3 Beacon Signaling
+### 8.3.1 General
+de-emphasis 同样也适用于 Beacon 信号。链路处于 L2 状态的设备可以发起唤醒事件来请求恢复电源，以便与系统通信。Beacon 是用于此目的的两种方法之一。另一种方式是使用可选边带信号 WAKE#。Beacon 示例如图 13-25 所示，图中显示了差分信号脉冲，然后沿相反方向衰减。
+![](./images/13-25.png)
+当链路处于 L2 电源状态时，其主电源和时钟关闭，但辅助电源（$V_{aux}$）保持一小部分器件工作，其中包含唤醒逻辑。为了发出唤醒事件信号，下游设备可以驱动上游 Beacon 以启动 L2 退出序列。在其下游端口上接收 Beacon 的 switch 或 bridge，必须通过发送 Beacon 向上游转发通知，或者通过使能 WAKE# 引脚。
 
+提供两个唤醒机制主要是考虑关于功耗的需求。如果使用 Beacon，端点和 Root Complex 之间所有的 bridges 和 switch 都需要使用 $V_{aux}$，以便它们能检测和生成 Beacon。在有限电池电量的移动系统中，节省功率具有高优先级，此时 WAKE# 引脚是首选的，该方法能使用尽可能少的$V_{aux}$。引脚可以从端点直接连到 Root Complex，不需要其他器件使用 $V_{aux}$。
 
-
-
+### Properties of the Beacon Signal
+- 一种低频、直流平衡差分信号，由 $2ns$ 到 $16\mu s$ 之间的周期脉冲组成
+- 脉冲间最大时间不超过 $16\mu s$
+- 传输的 Beacon 信号必须满足表 13-3 中的电压规格
+- 信号必须在最大 $32\mu s$内实现直流平衡
+- Beacon 信号传输与普通差分信号传输一样，必须使用处于低阻抗模式（单端 $50\Omega$，差分 $100\Omega$）的发送端来完成
+- 当发送信号时，Beacon 信号必须在 lane0 上传输
+- 注意，Beacon 必须根据上一节定义的规则 de-emphasis，对于大于 500ns 的 Beacon 脉冲，电压必须从 $V_{TX-DIFFp-p}$ 去重 6dB，对于小于 500ns 的 Beacon 脉冲，最多可以去重 3.5dB。
 
 # 9. Eye Diagram
 # 10. Transmitter Driver Characteristics
