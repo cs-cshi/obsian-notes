@@ -241,7 +241,8 @@ Gen1 de-emphasis 值是 3.5dB，即相同极性第一位之后所有位降低 3.
 <center> Figure 13-21: 3-Tap Tx Equalizer </center>
 ![](./images/13-21.png)
 为了在发送端上实现更好的 wave shaping，SPEC 要求使用 3-tap FIR（Finite Impulse Response，有限脉冲响应），即具有 3 bit-time-spaced 输入的滤波器，其概要图如图 13-21 所示。从中可以看出输出电压是 3 种输入的总和：原始输入、延迟一个 bit time，延迟另一个 bit 时间。这种类型的 FIR 滤波器通常用于 6.0 Gb/s 以上的 SERDES 中，并且对 PCIe 很有帮助，因为它的补偿基于通道在更长时间内传播信号。另一种实现方式是，在给定的位同时，受其之前一位和之后一位的值影响。
-
+<center>Figure 13-22: Tx 3-Tap Equalizer Shaping of an Output Pulse</center>
+![](./images/13-22.png)
 如图 13-22 所示，可以将三种输入基于时序位置描述为 "pre-cursor" $C_{-1}$ 、"cursor" $C_{0}$ 、"post-cursor" $C_{+1}$ ，它们组合起来根据即将到来的输入创建一个输出，即当前值和前一个值。调整 taps 系数可以优化输出的波形。通过查看单个脉冲可以很轻松的看出对信号的调整。
 
 滤波器根据分配给每个 tap 系数值（权重）对输出进行调整。三个系数绝对值之和为 1，SPEC 中仅给出 $C_{-1}$ 和 $C_{+1}$ ，$C_{0}$ 始终为正值。
@@ -274,7 +275,16 @@ Gen3 发送端需要向其对应接收端协商其支持的系数范围，其具
 <center>Table 13-2: Tx Coefficient Table</center>
 ![](./images/table13-2.png)
 
-**Coefficient Example:** 以 preset number P7 为例，对系数进行深入说明。P7 中 $C_{-1}$ 为 -0.100，$C_{+1}$ 为 -0.200，而 $|C_{-1}| + |C_{0}| + |C_{+1}| = 1$，因此 $C_{0}=0.700$。将这些值与 SPEC 中给出系数表 13-2 进行匹配，这需要进行转换，因为系数表给出的是分数。对于 P7 preset 值，$C_{-1} = 0.100 \approx 2/24(0.083), \, C_{+1}=0.200 \approx 5/24 (0.208)$。该值在系数表中突出显示，确信其值为正确值。在 preset 表中，P7 给出了 pre-shoot 为 3.5 dB +/- 1 dB，系数表中显示 2.9 dB，如果对系数值的粒度差异 $0.083/0.100 * 3.5 = 2.9$，将能得到相同的 preset 值。de-emphasis 系数值差异小很多（0.200 vs. 0.208），因此两个表 de-emphasis 都为 6.0 dB。
+**Coefficient Example:** 以 preset number P7 为例，对系数进行深入说明。P7 中 $C_{-1}$ 为 -0.100，$C_{+1}$ 为 -0.200，而 $|C_{-1}| + |C_{0}| + |C_{+1}| = 1$，因此 $C_{0}=0.700$。将这些值与 SPEC 中给出系数表 13-2 进行匹配，这需要进行转换，因为系数表给出的是分数。对于 P7 preset 值，$C_{-1} = 0.100 \approx 2/24(0.083), \, C_{+1}=0.200 \approx 5/24 (0.208)$。该值在系数表中突出显示，确信其值为正确值。在 preset 表中，P7 给出了 pre-shoot 为 3.5 dB +/- 1 dB，系数表中显示 2.9 dB，如果对系数值的粒度差异 $0.083/0.100 * 3.5 = 2.9$，将能得到相同的 preset 值。de-emphasis 系数值差异小很多（0.200 vs. 0.208），因此两个表 de-emphasis 都为 -6.0 dB。
+
+假设 P7 系数产生的电压中，full-swing 电压 Vd 为起点，那么 $Va = 0.8 Vd、Vb = 0.4Vd、Vc = 0.6 Vd$。De-emphasis 此时为 -6.0 dB，表示电压降低了 50%。Vb 该为 Va 的一半。pre-shoot 为 3.5 dB，意味着 $Vc/Vb = 0.668$，于是 $Vc = 0.4/0.668 = 0.598 Vd \approx 0.6 Vd$ 。最后 Boost 值，即 Vd/Vb 的比率，Presets 表中没有给出，但是用公式 $20*log(Vd/Vb)$ 得到 Boost = 7.9dB，与系数表给出的 7.6 dB 值相近，两个表列出的值对应一致。
+
+对于四个电压值的计算，本质上存在 3 个可编程的驱动器，它们的输出被求和以得出最中发送的信号值。如果当前光标（the cursor）保持不变，并且 pre-、post-cursor taps 为负，那么只需简单将前后 tps 相加可得出（$C_{0} + C_{-1} + C_{+1}$）：(maximum-height(Vd)、normal(Va)、de-emphasized(Vb) 和 pre-shoot(Vc))
+- $Vd = (C_{0} + C_{-1} + C_{+1}) = (0.700 + 0.100 + 0.200) = 10. * max\;voltage$ 
+- $V_{a} = (0.700 + (-0.100) + 0.200) = 0.8 * max\;voltage$。这是前一位具有相反极性，后一位具有相同极性时产生的值，即重复位串的第一个。
+- $V_{b} = (0.700 + (-0.100) + (-0.200)) = 0.4 * max\;voltage$。当前一位和后一位具有相同极性时产生的值，即重复位串的中间。
+- $V_{c} = (0.700 + 0.100 + (-0.200)) = 0.6 * max\;voltage$。当前一位有相同极性，后一位相反极性时产生的值，即重复位串的最后一位。
+
 
 ### 8.2.2 Pre-shoot, De-emphasis, and Boost
 ### 8.2.3 Presets and Ratios
