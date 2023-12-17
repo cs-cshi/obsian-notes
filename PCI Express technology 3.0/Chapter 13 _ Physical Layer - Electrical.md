@@ -280,16 +280,22 @@ Gen3 发送端需要向其对应接收端协商其支持的系数范围，其具
 假设 P7 系数产生的电压中，full-swing 电压 Vd 为起点，那么 $Va = 0.8 Vd、Vb = 0.4Vd、Vc = 0.6 Vd$。De-emphasis 此时为 -6.0 dB，表示电压降低了 50%。Vb 该为 Va 的一半。pre-shoot 为 3.5 dB，意味着 $Vc/Vb = 0.668$，于是 $Vc = 0.4/0.668 = 0.598 Vd \approx 0.6 Vd$ 。最后 Boost 值，即 Vd/Vb 的比率，Presets 表中没有给出，但是用公式 $20*log(Vd/Vb)$ 得到 Boost = 7.9dB，与系数表给出的 7.6 dB 值相近，两个表列出的值对应一致。
 
 对于四个电压值的计算，本质上存在 3 个可编程的驱动器，它们的输出被求和以得出最中发送的信号值。如果当前光标（the cursor）保持不变，并且 pre-、post-cursor taps 为负，那么只需简单将前后 tps 相加可得出（$C_{0} + C_{-1} + C_{+1}$）：(maximum-height(Vd)、normal(Va)、de-emphasized(Vb) 和 pre-shoot(Vc))
-- $Vd = (C_{0} + C_{-1} + C_{+1}) = (0.700 + 0.100 + 0.200) = 10. * max\;voltage$ 
-- $V_{a} = (0.700 + (-0.100) + 0.200) = 0.8 * max\;voltage$。这是前一位具有相反极性，后一位具有相同极性时产生的值，即重复位串的第一个。
+- $Vd = (C_{0} + C_{-1} + C_{+1}) = (0.700 + 0.100 + 0.200) = 10. * max\;voltage$ 。当前一位、后一位都具有相反极性时。
+- $V_{a} = (0.700 + (-0.100) + 0.200) = 0.8 * max\;voltage$。当前一位具有相反极性，后一位具有相同极性时产生的值，即重复位串的第一个。
 - $V_{b} = (0.700 + (-0.100) + (-0.200)) = 0.4 * max\;voltage$。当前一位和后一位具有相同极性时产生的值，即重复位串的中间。
 - $V_{c} = (0.700 + 0.100 + (-0.200)) = 0.6 * max\;voltage$。当前一位有相同极性，后一位相反极性时产生的值，即重复位串的最后一位。
 
+决定系数正负的因素在于随时间移动的前一位和后一位输入的极性。如图 13-24 所示。图中表示差分信号中的单端信号，最后底部轨迹显示了对上面三个输入的求和，并最终发出。图中系数值的大小由表 13-1 Tx Presets 表给出，此时根据前后电压的变化确定正/负。
+<center>Figure 13-24: Tx 3-Tap Equalizer Output</center>
+![](./images/13-24.png)
+Presets 系数在链路速率变为 Gen3 之前完全交换，在链路均衡过程中可以更新系数（#TODO，Revovery.Equalization 详细阐述）。
 
-### 8.2.2 Pre-shoot, De-emphasis, and Boost
-### 8.2.3 Presets and Ratios
-### 8.2.4 Equalizer Coefficients
-### 8.2.5 Beacon Signaling
+**EIEOS Pattern：** Gen3 中，当信号频率较低时也会测量一些电压，因为此时高频电平变化不会达到理想的水平。如 EIEOS 模式下，序列中包含 8 个连续 1，后跟 8 个连续 0，重复 128 bit 时间。其目的是给出明确信号，表明发送端退出电气空闲（注意 scrambler 加扰后的数据不会出现此模式）。对于 full-swing，其启动电压定义为 $V_{TX-EIEOS-FS}$，对于 reduced-swing，其启动电压定义为 $V_{TX-EIEOS-RS}$。
+
+**Reduced Swing**：发送端可以支持减小摆幅信号（从 Gen2 开始可选支持此功能），这样在短、低损耗的传输路径中实现节能和更好的信号。此时输出的电压具有与全摆幅 full-swing 相同的 1300 mV 最大值，但允许较低的 232 mV 最小电压，可由 $V_{TX-EIEOS-RS}$ 定义。由于 Reduced-swing 下支持的最大 boost 最大为 3.5 dB，因此此时所支持的 Preset 数量会有限制。
+
+## 8.3 Beacon Signaling
+
 
 # 9. Eye Diagram
 # 10. Transmitter Driver Characteristics

@@ -135,8 +135,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 537.5,
-    "collapsed": true
+    "width": 537.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -150,6 +149,7 @@
   },
   "active": "566aeba976d735d5",
   "lastOpenFiles": [
+    "PCI Express technology 3.0/images/13-24.png",
     "PCI Express technology 3.0/images/13-22.png",
     "images/13-22.png.md",
     "images",
@@ -165,7 +165,6 @@
     "PCI Express technology 3.0/images/13-17.png",
     "PCI Express technology 3.0/images/13-16.png",
     "PCI Express technology 3.0/Chapter 12 _ Physical Layer - Logical (Gen3).md",
-    "PCI Express technology 3.0/images/13-15.png",
     "image/13-12.png.md",
     "image",
     "PCI Express technology 3.0/Chapter 11 _ Physical Layer-Logical (Gen1、Gen2).md",
