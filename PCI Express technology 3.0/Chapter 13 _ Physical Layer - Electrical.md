@@ -297,6 +297,9 @@ Presets 系数在链路速率变为 Gen3 之前完全交换，在链路均衡过
 ## 8.3 Beacon Signaling
 
 
+
+
+
 # 9. Eye Diagram
 # 10. Transmitter Driver Characteristics
 # 11. Receiver Characteristics
