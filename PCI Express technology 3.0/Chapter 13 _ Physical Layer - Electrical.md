@@ -342,6 +342,20 @@ de-emphasis 同样也适用于 Beacon 信号。链路处于 L2 状态的设备�
 图 13-28 显示了 Gen1 的不良眼图。此时是没有 de-emphasis 情形下捕获的，因此迹线全部为了最小眼图区域外侧，即图中红色梯形。该示例表明抖动会影响边沿到达时间和电压电平，导致某些采样点位于图中不良区域。
 
 # 10. Transmitter Driver Characteristics
-
+表 13-3 中列出了一些发送端的特性，提供一些基本参数来说明速率之间的差异，如 UI，并表明某些保持不变的内容，如 Tx 共模电压。
+<center>Table 13-3: Tranmitter Specs</center>
+![](./images/table13-3-1.png)
+![](./images/table13-3-2.png)
+![](./images/table13-3-3.png)
+<center>Table 13-4: Parameters Specific to 8.0 GT/s</center>
+![](./images/table13-4.png)
 # 11. Receiver Characteristics
+## 11.1 Stressed-Eye Testing
+接收端应使用 stressed eye 技术，其中将具有特定问题的信号提供给输入引脚并监测 BER。由于使用方法不同，SPEC 将 Gen1/Gen2/Gen3 分开，然后给出第三部分，定义所有速率通用的参数。
+
+
+
+## 11.2 Receiver (Rx) Equalization
+### 11.2.1 Continuous-Time Linear Equalization(CTLE)
+### 11.2.2 Decision Feedback Equalization(DFE)
 # 12. Link Power Management States

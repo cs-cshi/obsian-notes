@@ -145,11 +145,16 @@
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
-      "command-palette:打开命令面板": false
+      "command-palette:打开命令面板": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "566aeba976d735d5",
+  "active": "8b8b186303355519",
   "lastOpenFiles": [
+    "PCI Express technology 3.0/images/table13-4.png",
+    "PCI Express technology 3.0/images/table13-3-3.png",
+    "PCI Express technology 3.0/images/table13-3-2.png",
+    "PCI Express technology 3.0/images/table13-3-1.png",
     "PCI Express technology 3.0/images/13-28.png",
     "PCI Express technology 3.0/images/13-27.png",
     "PCI Express technology 3.0/images/13-26.png",
@@ -159,12 +164,8 @@
     "images/13-22.png.md",
     "images",
     "PCI Express technology 3.0/images/table13-2.png",
-    "PCI Express technology 3.0/images/table13-1.png",
-    "PCI Express technology 3.0/images/13-23.png",
     "PCI Express technology 3.0/Chapter 11 _ Physical Layer - Logical (Gen1、Gen2).md",
     "PCI Express technology 3.0/Chapter 13 _ Physical Layer - Electrical.md",
-    "PCI Express technology 3.0/images/13-21.png",
-    "PCI Express technology 3.0/images/13-20.png",
     "PCI Express technology 3.0/Chapter 12 _ Physical Layer - Logical (Gen3).md",
     "image/13-12.png.md",
     "image",
