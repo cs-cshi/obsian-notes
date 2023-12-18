@@ -330,8 +330,18 @@ de-emphasis 同样也适用于 Beacon 信号。链路处于 L2 状态的设备�
 ![](./images/13-27.png)
 
 ## 9.4 Effects of Jitter
-抖动（timeing uncertainty）是当边沿在其理想时间之前或之后到达时发生的情况，其会降低信息完整性并使眼水平/垂直打开得更宽或更窄（与 normal 相比）。它由多种因素引起，如环境因素、传输过程中的数据模式，以及使信号电压电平超过/低于正常区域的噪声/信号衰减。Gen1 这可以认为是简单的集总（lumped effect）效应
+抖动（timeing uncertainty）是当边沿在其理想时间之前或之后到达时发生的情况，其会降低信息完整性并使眼水平/垂直打开得更宽或更窄（与 normal 相比）。它由多种因素引起，如环境因素、传输过程中的数据模式，以及使信号电压电平超过/低于正常区域的噪声/信号衰减。在 Gen1 中可以认为这是简单的集总（lumped effect）效应，但在更高速率下，它将是一个更为复杂、严峻的问题，会分成几个部分去考虑。基于此，Gen3 定义了 5 种不同的抖动值，以下简单介绍了对几种抖动：
+1. Un-correlated-jitter：与传输的数据模式无关
+2. Rj, Random jitter：无法预测源的随机抖动，一般假设符合高斯分布，通常由系统中的电噪声或热噪声引起。
+3. Dj, Deterministic jitter: 可预测并且受峰间（peak-to-peak）峰值限制，通常由 EMI、串扰（crosstalk）、电源噪声或接地问题引起。
+4. PWJ-Pulse Width Jitter-uncorrelated, edge-to-edge, high-frequency jitter.
+5. DjDD, Deterministic Jitter, using the Dual-Dirac approximation. 该模型是一种快速估计低 BER 总抖动的方法，无需大量样本。它使用相对较短的时间内（1h）采集的代表样本，并外推曲线以达到可接受的近似值。
+6. DDj, Data-dependent jitter，数据抖动，依赖于发送的数据模式，SPEC 指出这是由于数据包丢失和反射造成的。ISI 是 DDj 的一个例子。
+<center>Figure 13-28: Rx Bad Eye(No De-emphasis)</center>
+![](./images/13-28.png)
+图 13-28 显示了 Gen1 的不良眼图。此时是没有 de-emphasis 情形下捕获的，因此迹线全部为了最小眼图区域外侧，即图中红色梯形。该示例表明抖动会影响边沿到达时间和电压电平，导致某些采样点位于图中不良区域。
 
 # 10. Transmitter Driver Characteristics
+
 # 11. Receiver Characteristics
 # 12. Link Power Management States
