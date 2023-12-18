@@ -330,6 +330,7 @@ de-emphasis 同样也适用于 Beacon 信号。链路处于 L2 状态的设备�
 ![](./images/13-27.png)
 
 ## 9.4 Effects of Jitter
+抖动（timeing uncertainty）是当边沿在其理想时间之前或之后到达时发生的情况，其会降低信息完整性并使眼水平/垂直打开得更宽或更窄（与 normal 相比）。它由多种因素引起，如环境因素、传输过程中的数据模式，以及使信号电压电平超过/低于正常区域的噪声/信号衰减。Gen1 这可以认为是简单的集总（lumped effect）效应
 
 # 10. Transmitter Driver Characteristics
 # 11. Receiver Characteristics
