@@ -312,6 +312,25 @@ de-emphasis 同样也适用于 Beacon 信号。链路处于 L2 状态的设备�
 - 注意，Beacon 必须根据上一节定义的规则 de-emphasis，对于大于 500ns 的 Beacon 脉冲，电压必须从 $V_{TX-DIFFp-p}$ 去重 6dB，对于小于 500ns 的 Beacon 脉冲，最多可以去重 3.5dB。
 
 # 9. Eye Diagram
+## 9.1 Jitter, Noise, and Signal Attenuation
+当比特流从链路一端的发送端传输到另一端接收端时，它会受到以下破坏性影响：
+- 链路传输引起的确定性（即可预测）抖动
+- 由链路动态数据模式引起的数据相关抖动
+- 信号对中引入噪声
+- 由于传输线的阻抗效应导致的信号衰减
+## 9.2 The Eye Test
+为了确保接收端收到的信号是否符合规范，可执行眼图测试。
+> 传输系统最常见的时域测量是眼图。眼图是从伪随机比特序列中重复采样并由示波器显示的数据点图。观察的时间窗口是两个数据周期宽，对于 Gen1，周期是 400ps，因此窗口设定为 800ps.每个数据时钟脉冲都会触发示波器扫描。眼图使用户能够观察单个位置上的系统性能。
+	要观察每种可能的数据组合，示波器须像多次曝光的相机一样工作。数字示波器的显示持久性设为无限，这样随着每次时钟触发一次扫描，新的波形被测量出来并重叠到先前测量的波形上。为了提高合成图像的可读性，数字示波器可以在出现的多个波形（显示器上占据相同像素）分配不同颜色，以有效表达信息，这个过程称为颜色渐变/颜色分级（color-grading）。现代数字采样示波器还具有自动化测试的能力，以便充分表征各种眼图参数。
+## 9.3 Normal Eye Diagram
+<center>Figure 13-26: Transmitter Eye Diagram</center>
+![](./images/13-26.png)
+理想的跟踪捕获应绘制与图 13-26 标记为“Normal”所示轮廓相匹配的眼图。只要完全位于该区域内，就可以认为发送端和链路在误差范围之内。注意，眼图中所示的差分电压参数和值是峰值电压，而不是 SPEC 中 使用的 peak-to-peak 电压，因为眼图中只能表示峰值电压，而不能表示峰间电压。下图 13-27 展示真实良好眼图。
+<center>Figure 13-26: Transmitter Eye Diagram</center>
+![](./images/13-27.png)
+
+## 9.4 Effects of Jitter
+
 # 10. Transmitter Driver Characteristics
 # 11. Receiver Characteristics
 # 12. Link Power Management States
