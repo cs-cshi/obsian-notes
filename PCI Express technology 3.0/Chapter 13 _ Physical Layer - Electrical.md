@@ -353,9 +353,24 @@ de-emphasis 同样也适用于 Beacon 信号。链路处于 L2 状态的设备�
 ## 11.1 Stressed-Eye Testing
 接收端应使用 stressed eye 技术，其中将具有特定问题的信号提供给输入引脚并监测 BER。由于使用方法不同，SPEC 将 Gen1/Gen2/Gen3 分开，然后给出第三部分，定义所有速率通用的参数。
 
+### 11.1.1 2.5 and 5.0 GT/s
+Gen1 的参数测量是在接收端引脚上，并且能够观测裕度与 BER 之间隐含的相关性。在 Gen2 中，使用接收端容差。这是一种两步较准的方法，较准测试版以显示 SPEC 中定义的最坏情况下的信号裕度。一旦完成较准，将测试负载替换为待测设备，并观察其 BER。实际上有两组基于时钟方案的最坏情况数字：一组为公共时钟架构定义，另一组为数据时钟架构定义。在更高速度下，必须仔细考虑信号路径的每个元素，对于器件封装也是如此，测试过程中必须理解封装对信号添加的影响。
 
+较准 channel 本身的设计必须考虑到特定的特性，但是 SPEC 指出 FR4 PCB 上 28 英寸的走线长度应足以创建必要的 ISI。A signal generator 用于注入包含适当抖动元素的合规模式。
 
+### 11.1.2 8.0 GT/s
+Gen3 测试 stressed eye 的方法很类似，只有些许差异。一个区别是无法在设备的引脚处进行评估，因此使用复制通道（replica channel）来测量信号，就像设备是理想终端时出现在引脚处的信号一样。
+
+为了评估接收端正确执行均衡的能力，建议使用具有不同插入损耗特性的多个较准通道，以便可以在不止一种环境中测量接收端。与 Gen3 的发送端一样，接收端的较准通道由两端带有同轴连接器（coaxial connectors）的差分走线组成。
+
+为了在通道和接收端之间建立正确的相关性，需要对应用均衡后接收器内部收到的信号进行建模。这意味着必须应用后处理来模拟接收端中发生的情况，包括以下内容，其详细描述在 SPEC 中：
+- Package insertion loss
+- CDR - Clock and Data Recovery logic
+- 考虑最长较准通道的均衡，包括：
+	- first-order CELR (Continuous Time Linear Equalizer)
+	- One-tap DEF (Decision Feedback Equalizer)
 ## 11.2 Receiver (Rx) Equalization
+
 ### 11.2.1 Continuous-Time Linear Equalization(CTLE)
 ### 11.2.2 Decision Feedback Equalization(DFE)
 # 12. Link Power Management States
