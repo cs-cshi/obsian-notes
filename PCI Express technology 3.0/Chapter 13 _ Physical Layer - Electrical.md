@@ -370,9 +370,10 @@ Gen3 测试 stressed eye 的方法很类似，只有些许差异。一个区别�
 	- first-order CELR (Continuous Time Linear Equalizer)
 		- One-tap DEF (Decision Feedback Equalizer)
 ## 11.2 Receiver (Rx) Equalization
-发送端的均衡是强制的，但信号在经过长信道时仍可能受到足够的衰减，以至于眼图关闭并且信号在接收端无法识别。
-
+发送端的均衡是强制的，但信号在经过长信道时仍可能受到足够的衰减，以至于眼图关闭并且信号在接收端无法识别。SPEC 中描述了接收端的均衡逻辑，但其不作为实施指南。需要注意的是，当使用允许的最长通道时，需要一个版本来较准 stressed eye。该要求被描述为 CTLE、one-tap DFE。
 
 ### 11.2.1 Continuous-Time Linear Equalization(CTLE)
+线性均衡器（linear equalizer）从接收信号中去除不需要的频率分量。对于 PCIe，这可能就像无源高通滤波器一样简单，它可以降低接收信号中低频分量的电压，
+
 ### 11.2.2 Decision Feedback Equalization(DFE)
 # 12. Link Power Management States
