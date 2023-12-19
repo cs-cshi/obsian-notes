@@ -368,8 +368,10 @@ Gen3 测试 stressed eye 的方法很类似，只有些许差异。一个区别�
 - CDR - Clock and Data Recovery logic
 - 考虑最长较准通道的均衡，包括：
 	- first-order CELR (Continuous Time Linear Equalizer)
-	- One-tap DEF (Decision Feedback Equalizer)
+		- One-tap DEF (Decision Feedback Equalizer)
 ## 11.2 Receiver (Rx) Equalization
+发送端的均衡是强制的，但信号在经过长信道时仍可能受到足够的衰减，以至于眼图关闭并且信号在接收端无法识别。
+
 
 ### 11.2.1 Continuous-Time Linear Equalization(CTLE)
 ### 11.2.2 Decision Feedback Equalization(DFE)
