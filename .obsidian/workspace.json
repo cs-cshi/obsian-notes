@@ -135,8 +135,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 537.5,
-    "collapsed": true
+    "width": 537.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -149,8 +148,11 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "8b8b186303355519",
+  "active": "566aeba976d735d5",
   "lastOpenFiles": [
+    "PCI Express technology 3.0/images/13-32.png",
+    "PCI Express technology 3.0/images/13-31.png",
+    "PCI Express technology 3.0/images/13-30.png",
     "PCI Express technology 3.0/images/table13-4.png",
     "PCI Express technology 3.0/images/table13-3-3.png",
     "PCI Express technology 3.0/images/table13-3-2.png",
@@ -159,11 +161,8 @@
     "PCI Express technology 3.0/images/13-27.png",
     "PCI Express technology 3.0/images/13-26.png",
     "PCI Express technology 3.0/images/13-25.png",
-    "PCI Express technology 3.0/images/13-24.png",
-    "PCI Express technology 3.0/images/13-22.png",
     "images/13-22.png.md",
     "images",
-    "PCI Express technology 3.0/images/table13-2.png",
     "PCI Express technology 3.0/Chapter 11 _ Physical Layer - Logical (Gen1、Gen2).md",
     "PCI Express technology 3.0/Chapter 13 _ Physical Layer - Electrical.md",
     "PCI Express technology 3.0/Chapter 12 _ Physical Layer - Logical (Gen3).md",

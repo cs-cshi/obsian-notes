@@ -349,6 +349,7 @@ de-emphasis 同样也适用于 Beacon 信号。链路处于 L2 状态的设备�
 ![](./images/table13-3-3.png)
 <center>Table 13-4: Parameters Specific to 8.0 GT/s</center>
 ![](./images/table13-4.png)
+
 # 11. Receiver Characteristics
 ## 11.1 Stressed-Eye Testing
 接收端应使用 stressed eye 技术，其中将具有特定问题的信号提供给输入引脚并监测 BER。由于使用方法不同，SPEC 将 Gen1/Gen2/Gen3 分开，然后给出第三部分，定义所有速率通用的参数。
@@ -373,7 +374,19 @@ Gen3 测试 stressed eye 的方法很类似，只有些许差异。一个区别�
 发送端的均衡是强制的，但信号在经过长信道时仍可能受到足够的衰减，以至于眼图关闭并且信号在接收端无法识别。SPEC 中描述了接收端的均衡逻辑，但其不作为实施指南。需要注意的是，当使用允许的最长通道时，需要一个版本来较准 stressed eye。该要求被描述为 CTLE、one-tap DFE。
 
 ### 11.2.1 Continuous-Time Linear Equalization(CTLE)
-线性均衡器（linear equalizer）从接收信号中去除不需要的频率分量。对于 PCIe，这可能就像无源高通滤波器一样简单，它可以降低接收信号中低频分量的电压，
+线性均衡器（linear equalizer）从接收信号中去除需要的频率分量。对于 PCIe 来说，这可以是一个简单的无源高通滤波器，它可以降低接收信号中低频分量的电压，该信号在传输线上的衰减量较小。也可通过放大来打开接收眼图，但这会放大高频噪声以及信号并产生其他问题。
+<center>Figure 13-29: Rx Discrete-Time Linear Equalizer(DLE)</center>
+![](./images/13-29.png)
+接收端均衡的一种实现形式是采用类似于图 13-29 所示的电路，它是离散时间线性均衡（Discrete Time Linear Equalizer, DLE）。这只是一个 FIR 滤波器，与发射端使用的滤波器类似，提供波形整形作为补偿通道失真的一种手段。其中一个区别是，它在前端使用采样和保持（Sample and Hold, S&H）电路，将模拟输入电压保持在采样值一段时间，而不是让它不断变化。SPEC 中没有提及 DLR，可能因为与 CTLE 相比，其成本和功耗更高。与发送端的 FLR 一样，更多的 taps 可以提供更好的波形整形，但会增加成本，因此实际中通常只使用少量 taps。
 
+<center>Figure 13-30: Rx Continuous-Time Linear Equalizer(CTLE)</center>
+![](./images/13-30.png)
+相比之下，CTLE 不限于离散时间间隔，并且可以在较长的时间间隔内改善信号。一个简单的 RC network 可以作为 CTLE 高通滤波器的示例，如图 13-30 所示。这可以减少通道引起的低频失真，而不会增加需要的高频范围内噪声，并可以净化信号在下一阶段使用。图 13-31 说明了 CTLE 高通滤波器对接收到的信号低频分量的衰减影响。
+<center>Figure 13-31: Effect of Rx Continuous-Time Linear Equalizer(CTLE) on Receiver Signal</center>
+![](./images/13-31.png)
 ### 11.2.2 Decision Feedback Equalization(DFE)
+图 13-32 显示了一个 one-tap DFE 电路示例，从中可以看到接收到的信号与反馈值相加，然后输入值 "slicer"。slicer 是哟中 A/D 电路，它获取模拟输入并将其转换为干净的 full-swing 数字信号以供内部使用。它作出决策决定输入的是正值还是负值，并输出 +/- 1。这一决策仅用 one-tap 就被发送到 FIR 滤波器，这只是根据系数设置加权的延迟版本。然后，该滤波器的输出被反馈并与接收到的信号相加，用作 data slicer 的新输入。
+<center>Figure 13-32: Rx 1-Tap DFE</center>
+![](./images/13-32.png)
+
 # 12. Link Power Management States
