@@ -389,4 +389,9 @@ Gen3 测试 stressed eye 的方法很类似，只有些许差异。一个区别�
 <center>Figure 13-32: Rx 1-Tap DFE</center>
 ![](./images/13-32.png)
 
+SPEC 中进描述了 one-tap 过滤器，图 13-33 中显示了 two-tap 版本，以说明另一种选择。包含更多 tap 的动机是为了创建更清晰的输出，因为每个 tap 都会减少更多 UI 的噪音。因此，two taps 可以进一步减少信号中不需要的分量，如图底部绘制的脉冲响应波形所示。该版本还显示了其自适应，意味着它能够根据特定设计修改系数值。
+<center> Figure 13-33: Rx 2-Tap DFE</center>
+![](./images/13-33.png)
+该滤波器的系数可以固定，但如果可调，则允许接收端随时更改它们，只要更改时不会干扰当前操作。在 “Recovery.Equalization” 部分中，Receiver Preset Hints 被描述为使用 EQ TS1 由下行刘端口传送到链路上的上行端口。Preset 在选择这些系数的初始值上以 dB 降低的形式给出。
+
 # 12. Link Power Management States
