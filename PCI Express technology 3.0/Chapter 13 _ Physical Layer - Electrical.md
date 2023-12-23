@@ -394,4 +394,23 @@ SPEC 中进描述了 one-tap 过滤器，图 13-33 中显示了 two-tap 版本�
 ![](./images/13-33.png)
 该滤波器的系数可以固定，但如果可调，则允许接收端随时更改它们，只要更改时不会干扰当前操作。在 “Recovery.Equalization” 部分中，Receiver Preset Hints 被描述为使用 EQ TS1 由下行刘端口传送到链路上的上行端口。Preset 在选择这些系数的初始值上以 dB 降低的形式给出。
 
+由于 SPEC 没有要求，接收端选择对信号补偿执行的操作取决于具体的实现。行业文献支持，DEF 在 open eye 时会更有效，因为它通过在线性均衡（linear euqalizer）后使用，而线性均衡用于请理输入，使 DEF 能够正常工作。
+## 11.3 Receiver Characteristics
+表 13-5 列出了一些接收端的特定。图 13-34 的接收端眼图列出了一些参数。
+<center>Table 13-5: Common Receiver Characteristics</center>
+![](./images/table13-5.png)
+![](./images/table13-5-2.png)
+<center>Figure 13-34: 2.5 GT/s Reveiver Eye Diagram</center>
+![](./images/13-34.png)
 # 12. Link Power Management States
+图 13-35 ~ 13-39 描述了链路处于各种电源管理状态时物理层的电气状态，并描述了一些电气特性，其中之一是 Rx/Tx termination，这有时作为有源逻辑实现。
+<center>Figure 13-35: L0 Full-On Link State</center>
+![](./images/13-35.png)
+<center>Figure 13-36: L0s Low Power Link State</center>
+![](./images/13-36.png)
+<center>Figure 13-37: L1 Low Power Link State</center>
+![](./images/13-37.png)
+<center>Figure 13-38: L2 Low Power Link State</center>
+![](./images/13-38.png)
+<center>Figure 13-39: L3 Link Off State</center>
+![](./images/13-39.png)
