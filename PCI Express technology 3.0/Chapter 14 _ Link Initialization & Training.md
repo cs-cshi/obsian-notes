@@ -1,4 +1,9 @@
-本章描述物理层的链路训练和状态机（Link Training and Status State Machine, LTSSM）。链路的初始化过程是链路从通电或复位到链路达到完全运行的 L0 状态，在此期间发生正常的数据流量。
+本章描述物理层的链路训练和状态机（Link Training and Status State Machine, LTSSM）：
+- 链路的初始化过程是链路从通电或复位到链路达到完全运行的 L0 状态，在此期间发生正常的数据流量。
+- 链路电源管理状态 L0s、L1、L2 和 L3 以及状态转换。
+- 阐述恢复状态，在此期间的位锁定、符号（Symbol）锁定或块锁定。
+- 链路带宽管理的链路速度和位宽变化。
+
 # 1. Overview
 # 2. Ordered Sets in Link Training
 ## 2.1 General
