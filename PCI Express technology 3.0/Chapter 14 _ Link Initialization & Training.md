@@ -17,7 +17,11 @@
 - Lane Reversal：多通道设备端口上的通道从通道 0 开始按顺序编号。通常一个设备端口的 lane0 连到对端设备 lane0，lane1 连 lane1，以此类推。然后有时希望能逻辑上反转通道编号以简化布线并允许通道直接接线，不必交叉，如图 14-2。只要一台设备支持可选通道反转功能，该功能就可在两台设备间使用。Spec 不要求支持此功能，因此电路板设计人员需要验证至少一个连接设备支持此功能，然后再以相反的顺序连接通道。
 <center>Figure 14-2: Lane Reversal Example (Support Optional)</center>
 ![](./images/14-2.png)
-
+- Polarity Inversion：两个设备得 D+、D- 差分对也可以根据需要反转，以使电路板布局布线更容易。每个接收端 lane 必须独立检查极性，并在训练期间根据需要自动纠正，如图 14-3 所示。为此，接收端查看传入 TS1/TS2 的符号 6~15，如果在 TS1 中接收到 D21.5 而不是 D10.2，或者在 TS2 中接收到 D26.5 而不是预期的 D5.2，则该通道极性会反转，必须纠正。与 lane 反转不同，极性反转的支持是强制的。
+<center> Figure 14-3: Polarity Inversion Example (Support Required) </center>
+![](./images/14-3.png)
+- Link Data Rate：重置后，链路初始化和训练将始终使用默认的 Gen1 速率，以实现向后兼容。如果中间有更高的速率可用，则会在此过程中协商，并且在训练完成后，设备将自动进行快速恢复训练，以更改为支持的最高速率。
+- Lane-to-Lane De-skew：走线长度变化和其他因素导致多 lane 链路的并行比特流在不同时间到达接收器，这一问题称为信号偏移（signal skew）。接收端需要根据延迟早期到达的信号来补偿这种把偏差，以对齐比特流（Gen1 允许到达时间有 20 ns 的差异）。这使得电路设计人员摆脱了有时难以创建等长走线的限制。
 # 2. Ordered Sets in Link Training
 ## 2.1 General
 ## 2.2 TS1 and TS2 Ordered Sets
