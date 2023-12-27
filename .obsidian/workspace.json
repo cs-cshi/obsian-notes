@@ -18,8 +18,19 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "c8ebb1b291f31e19",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.5.3"
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -148,7 +159,7 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "566aeba976d735d5",
+  "active": "c8ebb1b291f31e19",
   "lastOpenFiles": [
     "PCI Express technology 3.0/Chapter 13 _ Physical Layer - Electrical.md",
     "PCI Express technology 3.0/Chapter 14 _ Link Initialization & Training.md",
