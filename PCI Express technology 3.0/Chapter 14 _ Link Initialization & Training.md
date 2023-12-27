@@ -5,6 +5,19 @@
 - 链路带宽管理的链路速度和位宽变化。
 
 # 1. Overview
+链路初始化和训练是由物理层控制的基于硬件（非软件）的过程。该过程配置并初始化设备的链路和端口，以便正常的数据包流量在链路上进行。
+
+<center>Figure 14-1: Link Training and Status State Machine Location</center>
+![](./images/14-1.png)
+如图 14-1 所示，完整的训练过程在复位后由硬件自动启动，并由 LSTTM（链路训练和状态机）管理。先对以下几个术语进行定义：
+- Bit Lock：链路训练开始时，接收端时钟尚未与输入信号的传输时钟同步，无法可靠地对输入位进行采样。在链路训练期间，接收端 CDR（Clock and Data Recovery）逻辑使用传入的比特流作为时钟参考来重新创建发送端的时钟。一旦时钟从流中恢复，接收端就获得了 bit lock，然后能够对输入的位进行采样。
+- Symbol Lock：对于 8b/10b 编码，下一步是获取 Symbol Lock。这是一个类似的问题，接收端现在可以识别各个位，但不知道 10 bit Symbol 的边界在哪里。当 TS1 和 TS2 交换时，接收端通过在比特流中搜索可识别的模式来检测。最直接的是 Gen1/Gen2 中的 COM，其是特殊的编码方式，易于识别。
+- Block Lock：对于 128b/130b 编码，该过程与 Symbol Lock 略有不同，此时没有 COM 字符。接收端仍然可以通过其他容易识别的标识来找到边界，Gen3 中使用 EIEOOS 来定位，其使用 00h 和 FFh 字节交替模式。它定义了块边界，并且当该模式结束时，下一个 Block 必须结束。
+- Link Width：具有多 lane 的设备可以使用不同的链路宽度。例如具有 x2 端口的设备可以与 x4 端口的设备相连。在链路训练期间，两个设备物理层会测试链路宽度并设置为彼此支持的最高值。
+- Lane Reversal：多通道设备端口上的通道从通道 0 开始按顺序编号。通常一个设备端口的 lane0 连到对端设备 lane0，lane1 连 lane1，以此类推。然后有时希望能逻辑上反转通道编号以简化布线并允许通道直接接线，不必交叉，如图 14-2。只要一台设备支持可选通道反转功能，该功能就可在两台设备间使用。Spec 不要求支持此功能，因此电路板设计人员需要验证至少一个连接设备支持此功能，然后再以相反的顺序连接通道。
+<center>Figure 14-2: Lane Reversal Example (Support Optional)</center>
+![](./images/14-2.png)
+
 # 2. Ordered Sets in Link Training
 ## 2.1 General
 ## 2.2 TS1 and TS2 Ordered Sets
