@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "PCI Express technology 3.0/Chapter 14 _ Link Initialization & Training.md",
+                "file": "PCI Express technology 3.0/Chapter 13 _ Physical Layer - Electrical.md",
                 "mode": "source",
                 "source": false
               }
@@ -86,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "PCI Express technology 3.0/Chapter 14 _ Link Initialization & Training.md",
+                "file": "PCI Express technology 3.0/Chapter 13 _ Physical Layer - Electrical.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "PCI Express technology 3.0/Chapter 14 _ Link Initialization & Training.md",
+                "file": "PCI Express technology 3.0/Chapter 13 _ Physical Layer - Electrical.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "PCI Express technology 3.0/Chapter 14 _ Link Initialization & Training.md"
+                "file": "PCI Express technology 3.0/Chapter 13 _ Physical Layer - Electrical.md"
               }
             }
           }
@@ -135,8 +135,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 537.5,
-    "collapsed": true
+    "width": 537.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -151,13 +150,13 @@
   },
   "active": "566aeba976d735d5",
   "lastOpenFiles": [
+    "PCI Express technology 3.0/Chapter 14 _ Link Initialization & Training.md",
     "PCI Express technology 3.0/images/14-3.png",
     "PCI Express technology 3.0/images/14-2.png",
     "PCI Express technology 3.0/images/14-1.png",
     "PCI Express technology 3.0/Chapter 13 _ Physical Layer - Electrical.md",
     "PCI Express technology 3.0/Chapter 12 _ Physical Layer - Logical (Gen3).md",
     "PCI Express technology 3.0/Chapter 11 _ Physical Layer - Logical (Gen1、Gen2).md",
-    "PCI Express technology 3.0/Chapter 14 _ Link Initialization & Training.md",
     "PCI Express technology 3.0/images/13-39.png",
     "PCI Express technology 3.0/images/13-38.png",
     "PCI Express technology 3.0/images/13-37.png",
@@ -165,7 +164,6 @@
     "PCI Express technology 3.0/images/13-35.png",
     "PCI Express technology 3.0/images/13-34.png",
     "PCI Express technology 3.0/images/table13-5-2.png",
-    "PCI Express technology 3.0/images/table13-5.png",
     "images/13-22.png.md",
     "images",
     "image/13-12.png.md",
