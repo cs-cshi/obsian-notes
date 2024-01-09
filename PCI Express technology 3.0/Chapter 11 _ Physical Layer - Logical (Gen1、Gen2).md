@@ -6,22 +6,24 @@
 > - Receiver: Bit Stream -> Symbol Stream -> Packet
 
 ![Figure 11-1: PCIe Port Layers](https://cdn.nlark.com/yuque/0/2023/png/12616066/1698246021065-003e9c90-e2e5-42ad-bb0b-fd83f4201d37.png#averageHue=%23e7e3aa&clientId=u4a9816d8-001c-4&from=paste&height=510&id=u521b45c8&originHeight=669&originWidth=710&originalType=binary&ratio=1&rotation=0&showTitle=true&size=124347&status=done&style=none&taskId=u36c0ab44-f672-49c8-aeca-6e59c44a267&title=Figure%2011-1%3A%20PCIe%20Port%20Layers&width=541 "Figure 11-1: PCIe Port Layers")
+
 PCIe 物理层主要完成编解码（8b/10b for Gen1&Gen2, 128b/130b for Gen3 and later）、扰码与解扰码、串并转换、差分发送与接收、链路训练等功能。
+
 PCIe Spec 将物理层分为两个部分——逻辑子层和电气子层，如下图所示：
 ![Figure 11-2: Logical and Electrical Sub-Blocks of the Physical Layer](https://cdn.nlark.com/yuque/0/2023/png/12616066/1698246696699-8a485dc6-6426-4e92-8f2d-faa4d788aeb5.png#averageHue=%23d6be9d&clientId=u4a9816d8-001c-4&from=paste&height=379&id=u85385891&originHeight=551&originWidth=816&originalType=binary&ratio=1&rotation=0&showTitle=true&size=42709&status=done&style=none&taskId=u04613881-4f9d-49fd-bed1-fc517d0b755&title=Figure%2011-2%3A%20Logical%20and%20Electrical%20Sub-Blocks%20of%20the%20Physical%20Layer&width=562 "Figure 11-2: Logical and Electrical Sub-Blocks of the Physical Layer")
+
 PCIe 物理层实现了一对收发差分对，因此可以实现全双工的通信方式。需要注意的是，PCIe Spec 只是规定了物理层需要实现的功能、性能与参数等，至于如何实现这些却并没有明确的说明。也就是说，厂商可以根据自己的需要和实际情况，来设计 PCIe 的物理层。本文以 Mindshare 书中的例子来简要的介绍 PCIe 的物理层逻辑部分，可能会与其他的厂商的设备的物理层实现方式有所差异，但是设计的目标和最终的功能是基本一致的。
 ## 1.1 Transmit Logic Overview
 物理层逻辑子层的发送端部分结构图如下图所示：
 ![Figure 11-3: Physical Layer Transmit Details](https://cdn.nlark.com/yuque/0/2023/png/12616066/1698247102801-278caa75-9f39-41d2-8288-08c5622f7b61.png#averageHue=%23afcbb1&clientId=u4a9816d8-001c-4&from=paste&height=650&id=WGOFi&originHeight=769&originWidth=532&originalType=binary&ratio=1&rotation=0&showTitle=true&size=86787&status=done&style=none&taskId=uc5dbd9fb-a97c-4a81-a098-57d88871ba5&title=Figure%2011-3%3A%20Physical%20Layer%20Transmit%20Details&width=450 "Figure 11-3: Physical Layer Transmit Details")
-数据链路层数据包首先进入缓冲区。buffer 作用：延迟 DLLPs 数据包流，以配合 Mux 在数据流中插入内容，如 Control/Token Characters、Logical Idle、Ordered Sets。
 
+数据链路层数据包首先进入缓冲区。buffer 作用：延迟 DLLPs 数据包流，以配合 Mux 在数据流中插入内容，如 Control/Token Characters、Logical Idle、Ordered Sets。
 - Gen1、Gen2 插入控制字符和数据字符，用于标记数据包边界以及创建  Ordered Sets。为了区分这两种字符，Mux 为其对应上一个 D/K# 位（Data or "Kontrol"）。
    - Ordered Sets：链路训练、链路管理、时钟容差补偿、更改链路功耗等。标识数据包边界或者 Ordered Set 的控制字符和数据字符。
-- Gen3 没有控制字符，在每 128 bit（16 bytes） 前插入 2-bit Sync Header，以区分当前数据块 Data Block、Ordered Set Block。
+- Gen3 没有控制字符，在每 128 bit（16 bytes） 前插入 2-bit Sync Header，以区分当前是 Data Block、Ordered Set Block。
    - Data Block：TLP or DLLP related bytes
 
-Byte Striping 将来自Mux 封装成帧的并行数据按照一定的规则分配到各个 lane 上，随后进行扰码（Scrambler）、编码（Encoder）、串行化（Serializer），然后差分发送对发送。
-
+Byte Striping 将来自 Mux 封装成帧的并行数据按照一定的规则分配到各个 lane 上，随后进行扰码（Scrambler）、编码（Encoder）、串行化（Serializer），然后差分发送对发送。
 - gen1、gen2：一个字节传输到一条 lane 上，下个字节传输到下一条 lane 上，然后所有 lanes 同时传输。
 
 扰频器 Scrambler：将伪随机码异或到字节上以加扰数据（伪随机码可预测，接收器能恢复）。开始和结束帧字节不被加扰。加扰消除比特流中的重复模式，降低 EMI 噪音。
